@@ -1,0 +1,64 @@
+// For notes
+
+// page 239
+var list = new ArrayList<Integer>();
+list.add(3);            ->      list.add(Integer.valueOf(3));       // автоупаковка
+int n = list.get(i);    ->      int n = list.get(i).intValue();     // автораспаковка
+
+// метод, изменяющий свои числовые параметры,
+// с использованием контейнерного типа - intHolder
+public static void triple (intHolder x) {
+    x.value++;      // успешная модификация локальной переменной
+}
+
+// page 242
+// методы с переменным числом параметров
+
+public class PrintStream {
+    public PrintStream printf(String fmt, Object ... args) {       // Object ...   ->   Object[]
+        return format(fmt, args);
+    }
+
+    System.out.printf("%d %s", n, "widgets");   ->  System.out.printf("%d %s", new Object[] { new Integer(n), "widgets"} );
+}
+
+public static double max (double... values) {
+    double largest = Double.MIN_VALUE;
+    for (double v : values){
+        if (v > largest) {
+            largest = v;
+        }
+    }
+    return largest;
+}
+
+double m = mах(З.1, 40.4, -5);   ->  new double[] { 3.1, 40.4, -5 }
+
+// page 243
+// Классы перечислений
+
+public enum Size {
+    SMALL,
+    MEDIUM,
+    LARGE,
+    EXTRA_LARGE
+};
+// В классы Enum можно добавить конструкторы, методы и поля
+
+
+public enum Size{
+    SMALL("S"),
+    MEDIUM("M"),
+    LARGE("L"),
+    EXTRA_LARGE("XL"),
+
+    private String abbreviation;
+
+    private Size(String abbreviation){
+        this.abbreviation = abbreviation;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+}
