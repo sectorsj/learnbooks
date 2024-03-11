@@ -62,3 +62,5 @@ public enum Size{
         return abbreviation;
     }
 }
+Size s = (Size) Enum.valueOf(Size.class, "SMALL");  // s будет присвоено значение Size.SМALL
+Size[] values = Size.values();  // Size.SMALL, Size.MEDIUM, Size.LARGE,Size.EXTRA_LARGE
