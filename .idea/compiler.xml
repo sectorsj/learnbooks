@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="shildt" />
+        <module name="vasilyev" />
+        <module name="hortsmann_vol1" />
+        <module name="prokhorenok" />
+        <module name="disignpatterns" />
+        <module name="learnJava" />
+        <module name="oreilly" />
+        <module name="grokking_algorithms" />
+        <module name="javamaster" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="dp" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

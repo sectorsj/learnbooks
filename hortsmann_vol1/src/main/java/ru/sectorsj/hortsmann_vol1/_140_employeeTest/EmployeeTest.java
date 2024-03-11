@@ -13,7 +13,9 @@ public class EmployeeTest {
             emp.raiseSalary(5);
         }
         for (Employee emp : staff) {
-            System.out.println("name: " + emp.getName() + ", salary: " + emp.getSalary() + ", hireDay: " + emp.getHireDay());
+            System.out.println("name: " + emp.getName() +
+                    ", salary: " + emp.getSalary() +
+                    ", hireDay: " + emp.getHireDay());
         }
     }
 }
