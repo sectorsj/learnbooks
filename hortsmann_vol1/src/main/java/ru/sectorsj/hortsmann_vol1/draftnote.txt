@@ -113,7 +113,5 @@ public static void doSomethingWithClass(String name) throws ReflectiveOperationE
 1. нужно создать архивный JАR-файл
 2. запустить его на выполнение, выполнив следующие команды:
     javac resource/ResourceTest.java
-    jar cvfe ResourceTest.jar resources.ResourceTest\
-        resources/*.class resources/*.qif
-        resources/data/*.txt corejava/*.txt
+    jar cvfe ResourceTest.jar resources.ResourceTest\ resources/*.class resources/*.qif resources/data/*.txt corejava/*.txt
     java -jar ResourceTest.jar
