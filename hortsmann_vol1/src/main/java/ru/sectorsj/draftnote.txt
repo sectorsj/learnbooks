@@ -116,14 +116,53 @@ public static void doSomethingWithClass(String name) throws ReflectiveOperationE
     jar cvfe ResourceTest.jar resources.ResourceTest\ resources/*.class resources/*.qif resources/data/*.txt corejava/*.txt
     java -jar ResourceTest.jar
 
+В итоге получилось так:
+
 Структура JAR-файла:
 \ResourceTest.jar
     \corejava
         \title.txt
     \META-INF
         \MANIFEST.MF
-    \resources
-        \about.gif
-        \ResourceTest.class
-        \data
-            \about.txt
+    \data
+        \about.txt
+    \ru
+        \sectorsj
+            \_251_res
+                \ResourceTest.class
+    \about.gif
+
+package ru.sectorsj._251_res;
+
+import javax.swing.*;
+import java.io.*;
+import java.net.*;
+import java.nio.charset.*;
+
+public class ResTest {
+    public static void main(String[] args) throws IOException {
+        Class cl = ResTest.class;
+        URL aboutURL = cl.getResource("/about.gif");
+        var icon = new ImageIcon(aboutURL);
+
+        InputStream stream = cl.getResourceAsStream("/data/about.txt");
+        var about = new String(stream.readAllBytes(), "UTF-8");
+
+        InputStream stream2 = cl.getResourceAsStream("/corejava/title.txt");
+        var title = new String(stream2.readAllBytes(), StandardCharsets.UTF_8).trim();
+
+        JOptionPane.showMessageDialog(null,
+                about,
+                title,
+                JOptionPane.INFORMATION_MESSAGE,
+                icon);
+    }
+}
+
+jar cvfe .\ru\sectorsj\_251_res\ResourceTest.jar ru.sectorsj._251_res.ResTest
+ru/sectorsj/_251_res/ResTest.class
+-C D:\filesEvgeniy\projects\mycoding\java\learnbooks\hortsmann_vol1\src\main\resources\_251 corejava
+-C D:\filesEvgeniy\projects\mycoding\java\learnbooks\hortsmann_vol1\src\main\resources\_251 about.gif
+-C D:\filesEvgeniy\projects\mycoding\java\learnbooks\hortsmann_vol1\src\main\resources\_251 data
+
+*добавил папки а не конечные файлы.
