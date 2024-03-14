@@ -1,0 +1,129 @@
+// For notes
+https://horstmann.com/corejava/index.html
+
+// page 239
+var list = new ArrayList<Integer>();
+list.add(3);            ->      list.add(Integer.valueOf(3));       // автоупаковка
+int n = list.get(i);    ->      int n = list.get(i).intValue();     // автораспаковка
+
+// метод, изменяющий свои числовые параметры,
+// с использованием контейнерного типа - intHolder
+public static void triple (intHolder x) {
+    x.value++;      // успешная модификация локальной переменной
+}
+
+// page 242
+// методы с переменным числом параметров
+
+public class PrintStream {
+    public PrintStream printf(String fmt, Object ... args) {       // Object ...   ->   Object[]
+        return format(fmt, args);
+    }
+
+    System.out.printf("%d %s", n, "widgets");   ->  System.out.printf("%d %s", new Object[] { new Integer(n), "widgets"} );
+}
+
+public static double max (double... values) {
+    double largest = Double.MIN_VALUE;
+    for (double v : values){
+        if (v > largest) {
+            largest = v;
+        }
+    }
+    return largest;
+}
+
+double m = mах(З.1, 40.4, -5);   ->  new double[] { 3.1, 40.4, -5 }
+
+// page 243
+// Классы перечислений
+
+public enum Size {
+    SMALL,
+    MEDIUM,
+    LARGE,
+    EXTRA_LARGE
+};
+// В классы Enum можно добавить конструкторы, методы и поля
+
+
+public enum Size{
+    SMALL("S"),
+    MEDIUM("M"),
+    LARGE("L"),
+    EXTRA_LARGE("XL"),
+
+    private String abbreviation;
+
+    private Size(String abbreviation){
+        this.abbreviation = abbreviation;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+}
+Size s = (Size) Enum.valueOf(Size.class, "SMALL");  // s будет присвоено значение Size.SМALL
+Size[] values = Size.values();  // Size.SMALL, Size.MEDIUM, Size.LARGE,Size.EXTRA_LARGE
+
+// page 245
+// 5.7 Рефлексия
+задачи для рефлексии:
+    • анализировать возможности классов в процессе выполнения программы;
+    • проверять объекты при выполнении программы;
+      например, с помощью рефлексии можно реализовать метод toString(),
+      совместимый со всеми классами;
+    • реализовывать обобщенный код для работы с массивами;
+    • применять объекты типа Method, которые работают аналогично указателям на функции в языках, подобных С++.
+
+// Класс Class
+Employee e;
+Class cl = e.getClass();
+System.out.println(e.getClass().getName() + ": " + e.getName()); -> Employee: Harry Hacker
+
+var generator = new Random();
+Class cl = generator.getClass();
+String name = cl.getName(); // в переменной name устанавливает строковое значение "java.util.Date"
+
+String className = "java.util.Date";
+Class cl = Class.forName(className);
+
+Class cl1 = Date.class; // если произведен импорт пакета java.util.*;
+Class cl2 = int.class;  // тип int - это не класс, но, несмотря на это, int.class - это объект типа Class.
+Class сlЗ = Double[].class;
+
+Employee.class => Class<Employee>
+
+var className = "java.util.Random"; // или любое другое имя класса с конструктором без аргументов
+Class cl = Class.forName(className);
+Object obj = cl.getConstructor().newInstance(); // получение экземпляра класса "Random"
+
+// page 249
+// 5.7.2 Обработка исключений
+public static void doSomethingWithClass(String name) throws ReflectiveOperationException {
+    Class cl = Class.forName(name); // может сгенерировать исключение сделать что-нибудь с переменной cl
+}
+
+// 5.7.3 Ресурсы
+// Примеры:
+• Файлы изображения и звука
+• Текстовые файлы, содержащие строки сообщений и метки экранных кнопок.
+
+Для компиляции листинга 5.13 (ResourceTest)
+1. нужно создать архивный JАR-файл
+2. запустить его на выполнение, выполнив следующие команды:
+    javac resource/ResourceTest.java
+    jar cvfe ResourceTest.jar resources.ResourceTest\ resources/*.class resources/*.qif resources/data/*.txt corejava/*.txt
+    java -jar ResourceTest.jar
+
+Структура JAR-файла:
+\ResourceTest.jar
+    \corejava
+        \title.txt
+    \META-INF
+        \MANIFEST.MF
+    \resources
+        \about.gif
+        \ResourceTest.class
+        \data
+            \about.txt

@@ -11,6 +11,6 @@ module ru.sectorsj.hortsmann_vol1 {
             requires eu.hansolo.fx.heatmap;
             requires com.almasb.fxgl.all;
 
-    exports ru.sectorsj.hortsmann_v1._0_hello;
-    opens ru.sectorsj.hortsmann_v1._0_hello to javafx.fxml;
+    exports ru.sectorsj._0_hello;
+    opens ru.sectorsj._0_hello to javafx.fxml;
 }
