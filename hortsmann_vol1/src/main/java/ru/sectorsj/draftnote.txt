@@ -166,3 +166,41 @@ ru/sectorsj/_251_res/ResTest.class
 -C D:\filesEvgeniy\projects\mycoding\java\learnbooks\hortsmann_vol1\src\main\resources\_251 data
 
 *добавил папки, а не конечные файлы.
+
+// page 263
+// 5.7.6.
+
+var а= new Employee[100];
+...
+// массив заполнен
+a = Arrays.copyOf(a, 2 * a.length);
+
+// бесполезно!!!
+public static Object[] badCopyOf(Object[J а, int newLength) {
+    var newArray = new Object[newLength];
+    System.arraycopy(a, 0, newArray, 0, Math.min(a.length, newLength));
+    return newArray;
+}
+
+Для этого потребуются методы класса Array из пакета java.lang.reflect
+и особенно метод newInstance()
+
+// так можно
+Object newArray = Array.newInstance(componentType, newLength);
+
+Для того чтобы определить тип элементов нового массива, необходимо:
+1. Определить, какому именно классу принадлежит объект "а".
+2. Убедиться в том, что он действительно является массивом.
+3. Воспользоваться методом getComponentType() из класса Class
+    (определен лишь для объектов типа Class, представляющих массивы),
+    чтобы получить требуемый тип массива.
+
+public static Object goodCopyOf(Object а, int newLength) {
+    Class cl = a.getClass();
+    if (!cl.isArray()) return null;
+    Class componentType = cl.getComponentType();
+    int length = Array.getLength(a);
+    Object newArray = Array.newInstance(componentType, newLength);
+    System.arraycopy(a, 0, newArray, 0, Math.min(length, newLength) );
+    return newArray;
+}
