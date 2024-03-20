@@ -165,4 +165,4 @@ ru/sectorsj/_251_res/ResTest.class
 -C D:\filesEvgeniy\projects\mycoding\java\learnbooks\hortsmann_vol1\src\main\resources\_251 about.gif
 -C D:\filesEvgeniy\projects\mycoding\java\learnbooks\hortsmann_vol1\src\main\resources\_251 data
 
-*добавил папки а не конечные файлы.
+*добавил папки, а не конечные файлы.
