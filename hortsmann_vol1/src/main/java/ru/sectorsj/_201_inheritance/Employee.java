@@ -2,7 +2,7 @@ package ru.sectorsj._201_inheritance;
 
 import java.time.LocalDate;
 
-public class Employee {
+class Employee {
     private String name;
     private double salary;
     private LocalDate hireDay;

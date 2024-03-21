@@ -220,7 +220,7 @@ Method m1 = Employee.class.getMethod("getName");
 Method m2 = Employee.class.getMethod("raiseSalary", double.class);
 
 // для конструкторов
-Class cl = Random.class;    // // или любой другой класс с конструктором, принимающим параметр типа long
+Class cl = Random.class;    // или любой другой класс с конструктором, принимающим параметр типа long
 Constructor cons = cl.getConstructor(long.class);
 Object obj = cons.newInstance(45L);
 
@@ -256,11 +256,30 @@ Math.class.getMethod("sqrt", double.class)
 6. Пользоваться принципом полиморфизма, а не данными о типе
 7. Не злоупотреблять механизмом рефлексии
 
+// 273
+// interfaces | lambdas | inner classes | service loaders | proxies
+
+// 6.1 Интерфейсы
+// 6.1.1 Понятие интерфейса
+
+// до java 5
+public interface Comparable {
+    int compareTo(Object other);
+}
+// после java 5
+public interface Comparable<T> {
+    int compareTo(T other); //этот параметр относится к обобщенному типу Т
+}
+
+Итак, если Comparable<Employee> ->  int compareTo(Employee other);
 
 
-
-
-
+class Employee implements ComparaЫe<Employee> {
+    public int compareTo(Employee other) {
+        return DouЫe.compare(salary, other.salary);
+    }
+    ...
+}
 
 
 
