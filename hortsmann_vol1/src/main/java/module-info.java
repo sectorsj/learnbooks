@@ -13,7 +13,7 @@ module ru.sectorsj.hortsmann_vol1 {
 
     exports ru.sectorsj._0_hello;
     opens ru.sectorsj._0_hello to javafx.fxml;
-    opens ru.sectorsj._260_objectAnalyzer;
-    opens java.util; // Открываем пакет java.util для доступа из нашего модуля
+    //opens ru.sectorsj._260_objectAnalyzer;
+    //opens java.util; // Открываем пакет java.util для доступа из нашего модуля
 
 }
