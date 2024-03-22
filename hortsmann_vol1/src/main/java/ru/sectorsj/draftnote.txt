@@ -281,11 +281,25 @@ class Employee implements ComparaЫe<Employee> {
     ...
 }
 
+// page 289
+// 6.1.8 Интерфейс Comparable
 
+public interface Comparator<T> {
+    int compare(T first, Т second);
+}
 
+// создаем компаратор для сравнения строк по их длине
+class LengthComparator implements Comparator<String>{
+    public int compare(String first, String second) {
+        return first.length() - second.length();
+    }
+}
 
+var comp = new LengthComparator();
+if (comp.compare(words[i], words(j]) > 0) ...
 
-
+String[] friends = { "Peter", "Paul", "Mary" };
+Arrays.sort(friends, new LengthComparator());
 
 
 
