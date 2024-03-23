@@ -301,16 +301,67 @@ if (comp.compare(words[i], words(j]) > 0) ...
 String[] friends = { "Peter", "Paul", "Mary" };
 Arrays.sort(friends, new LengthComparator());
 
+// page 290
+// 6.1.9 Клонирование объектов
 
+var original = new Employee("Невил Долгопупс", 50000);
+Employee copy = original;
+copy.raiseSalary(10);   // упс, оригинал тоже изменился!
 
+Employee copy = original.clone();
+copy.raiseSalary(10);   // хорошо, теперь оригинал не изменился!
 
+Метод clone() - является защищенным (protected)
 
+Чтобы применить метод clone(), нужно принять следующее решение:
+Вариант 1. Достаточно ли метода clone(), предоставляемого по умолчанию?
+Вариант 2. Можно ли доработать предоставляемый по умолчанию метод clone() таким образом,
+   чтобы вызывать его для изменяемых объектов?
+Вариант 3. Следует ли вообще отказаться от применения метода clone()?
 
+Если хотите использовать Вариант 1 или Вариант2, то нужно:
+1. Реализовать интерфейс Cloneable.
+2. Переопределить метод clone() с модификатором доступа public.
 
+Интерфейс Cloneable - маркерный интерфейс, т.е. не имеет ни одного метода.
+Его задача, разрешить выполнение операции instanceof
+для проверки типа следующим образом:
 
+if (obj instanceof Cloneable) ...
 
+Для реализации метода clone() по умолчанию(неполное копирование), нужно:
+1. реализовать интерфейс Cloneable,
+2. переопределить метод clone() как открытый (public)
+3. сделать вызов super.clone()
 
+class Employee implements Cloneable {
+    // сделать метод открытым, изменить возвращаемый тип
+    public Employee clone() throws CloneNotSupportedException {
+        return (Employee) super.clone();
+    }
+    ...
+}
 
+// пример реализации метода clone(), выполняющего полное копирование
+class Employee implements Cloneable{
+    ...
+
+    public Employee clone() throws CloneNotSupportedException{
+        // вызов метода Object.clone()
+        Employee cloned = (Employee) super.clone();
+
+        // клонировать изменяемые поля
+        cloned.hireDay = (Date) hireDay.clone();
+
+        return cloned
+    }
+}
+
+// пример метода clone() в массивах,
+// но он открытый (public), а не защищенный (protected)
+int[] luckyNumbers = {2, 3, 5, 7, 11, 13};
+int[] cloned = (int[]) luckyNumbers.clone();
+cloned[5] = 12;     // не изменяет элемент массива luckyNumbers[5]
 
 
 
