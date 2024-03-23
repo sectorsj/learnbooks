@@ -383,20 +383,51 @@ Arrays.sort(strings, new LengthComparator());
 
 
 
+// 6.2.2 Синтаксис лямбда-выражений
+first.length() - second.length()
+->
+(String first, String second) -> first.length() - second.length()
+
+// -> λfirst.λsecond.first.length() - second.length()
+
+// если есть параметры:
+(String first, String second) -> {
+    if (first.length() < second.length()) return -1;
+    else if (first.length() > second.length()) return 1;
+    else return 0;
+}
+
+// при отсутствии параметров:
+() -> {
+    for (int i = 100; i >= 0; i--)
+        System.out.println(i);
+}
+
+// Можно опустить типы параметров лямбда выражений, т.к.
+// результат вычисления лямбда-выражения присваивается компаратору символьных строк.
+// (first, second) тоже самое, что и "(String first, String second)"
+
+Comparator<String> comp = (first, second) ->
+    first.length() - second.length();
+
+// Если у метода имеется единственный параметр выводимого типа,
+// то можно опустить круглые скобки
+// вместо (event) -> ...
+// или (ActionListener event) -> ...
+
+ActionListener listener = event ->
+    System.out.println("Время " + Instant.ofEpochMilli(event.getWhen()));
+
+// Результат вычисления лямбда-выражений вообще не указывается.
+// Данное выражение может быть использовано там,
+// где ожидается результат типа int
+(String first, String second) ->
+    first.length() - second.length()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+// Недопустимо, чтобы значение возвращалось в одних ветвях лямбда-выражения,
+// но не возвращалось в других его ветвях.
+(int х) -> (if (х >= 0) return 1;)      // Ошибка!
 
 
 
