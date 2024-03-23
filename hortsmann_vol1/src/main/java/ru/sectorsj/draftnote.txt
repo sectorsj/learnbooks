@@ -363,6 +363,41 @@ int[] luckyNumbers = {2, 3, 5, 7, 11, 13};
 int[] cloned = (int[]) luckyNumbers.clone();
 cloned[5] = 12;     // не изменяет элемент массива luckyNumbers[5]
 
+// page 296
+// 6.2 Лямбда выражения
+// 6.2.1 Причины для употребления лямбда-выражений
+
+class Worker implements ActionListener {
+    public void actionPerformed(ActionEvent event){
+        // сделать что-то
+    }
+}
+
+class LengthComparator implements Comparator<String> {
+    public int compare(String first, String second) {
+        return first.length() - second.length();
+    }
+}
+...
+Arrays.sort(strings, new LengthComparator());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
