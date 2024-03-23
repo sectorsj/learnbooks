@@ -430,11 +430,45 @@ ActionListener listener = event ->
 (int х) -> (if (х >= 0) return 1;)      // Ошибка!
 
 
+// page 300
+// 6.2.3 Функциональные интерфейсы
 
 
+Чтобы продемонстрировать преобразование в функциональный интерфейс,
+рассмотрим снова метод Arrays.sort().
+В качестве второго параметра ему требуется экземпляр типа Comparator - интерфейса с единственным методом.
 
+Вместо него достаточно предоставить лямбда-выражение следующим образом:
+Arrays.sort(words, (first, second) -> first.length() - second.length() );
+Подспудно метод Arrays.sort() принимает объект некоторого класса,
+реализующего интерфейс Comparator.
+В результате вызова метода compare() для этого объекта выполняется тело лямбда-выражения.
+Управление такими объектами и классами полностью зависит от конкретной реализации
+и может быть намного более эффективным, чем применение традиционных внутренних классов.
+Поэтому лямбда-выражение лучше всего рассматривать как функцию, а не объект,
+приняв к сведению, что оно может быть передано функциональному интерфейсу.
 
+В стандартной библиотеке Java предоставляется целый ряд
+весьма универсальных функциональных интерфейсов,
+входящих в пакет java.util.function
 
+BiFunction<String, String, Integer> copm
+    = (first, second) -> first.length() - second.length();
 
+public interface Predicate<T> {
+    boolean test(T t);
+    // Дополнительные методы по умолчанию и статические методы
+}
 
+// removeIf() - из класса ArrayList, с параметром типа Predicate
+list.removeIf(e -> e == null);
 
+// Supplier<T>
+public interface Supplier<T>{
+    T get();
+}
+
+LocalDate hireDay = Objects.requireNonNullOrElse(day, new LocalDate(1970, 1, 1));
+->
+LocalDate hireDay = Objects.requireNonNullOrElseGet(day,
+    () -> new LocalDate(1970, 1, 1));
