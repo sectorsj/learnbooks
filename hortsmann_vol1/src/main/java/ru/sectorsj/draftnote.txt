@@ -452,7 +452,7 @@ Arrays.sort(words, (first, second) -> first.length() - second.length() );
 весьма универсальных функциональных интерфейсов,
 входящих в пакет java.util.function
 
-BiFunction<String, String, Integer> copm
+BiFunction<String, String, Integer> comp
     = (first, second) -> first.length() - second.length();
 
 public interface Predicate<T> {
