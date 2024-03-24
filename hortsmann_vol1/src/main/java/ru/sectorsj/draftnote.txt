@@ -543,6 +543,43 @@ class RepeatedGreeter extends Greeter {
     }
 }
 
+// page 305
+// 6.2.5 Ссылки на конструкторы
+
+Ссылки на конструкторы действуют таким же образом, как и ссылки на методы,
+за исключением того, что вместо имени метода указывается операция new.
+
+ArrayList<String> names = ...;
+Stream<Person> stream = names.stream().map(Person::new);
+List<Person> people = stream.collect(Collectors.toList());
+
+int[]::new  => x -> new int[x]
+
+Object[] people = steam.toArray();      // допустим требуется создать массив из объектов типа Person
+->
+Object[] people = steam.toArray(Person[]::new);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
