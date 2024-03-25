@@ -757,8 +757,54 @@ Arrays.sort(people, comparing(Person::getMiddleName, nullsFirst(naturalOrder()))
 // naturalOrder().reversed() = reverseOrder()
 
 
+// page 312
+// 6.З Внутренние классы
 
+// Зачем нужны внутренние классы?
+1. Внутренний класс можно скрыть от других классов того же пакета.
+2. Объект внутреннего класса имеет доступ к данным объекта,
+   в котором он определен, включая закрытые данные.
 
+// 6.3.1 Доступ к состоянию объекта с помощью внутреннего класса
+
+//
+public class TalkingClock {
+    private int interval;
+    private boolean beep;
+
+    public TalkingClock(int interval, boolean beep) {...}
+    public void start() {...}
+
+    // внутренний класс
+    public class TimerPrinter implements ActionListener {
+        ...
+    }
+}
+
+// подробнее класс TimerPrinter
+public class TimerPrinter implements ActionListener {
+    public void actionPerformed(ActionEvent event) {
+        System.out.println("Сигнал прозвучал в " + Instant.ofEpochMilli(event.getWhen()));
+        if (beep) Toolkit.getDefaultToolkit().beep();
+
+    }
+}
+// в классе TimePrinter отсутствует поле bеер.
+// Вместо этого метод actionPerformed() обращается к соответствующему полю объекта типа TalkingClock.
+// Добавим в код ссылку на объект внешнего класса - other.
+->
+public class TimerPrinter implements ActionListener {
+    public void actionPerformed(ActionEvent event) {
+        System.out.println("Сигнал прозвучал в " + Instant.ofEpochMilli(event.getWhen()));
+        if (other.beep) Toolkit.getDefaultToolkit().beep();
+    }
+}
+ -> public TimerPrinter(TalkingClock){
+    // автоматически генерируется код
+    other = clock;
+ }
+
+ var = new TimePrinter(this); //параметр добавляется автоматически
 
 
 
