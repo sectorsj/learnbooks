@@ -724,6 +724,41 @@ repeat(10, i -> System.out.println("Countdown: " + (9 - i)));
 // его можно пометить аннотацией @Functionalinterface. Это не обязательно,
 // но дает ряд преимуществ.
 
+// page 311
+// 6.2.8 Еще о компараторах
+
+// Comparator -> comparing () (статический метод)
+// Имеется массив объектов типа Person. Сортировка его элементов по имени.
+Arrays.sort(people, Comparator.comparing(Person::getName));
+
+// Компараторы можно связывать в цепочку с помощью метода thenComparing().
+Если у двух людей оказываются одинаковые фамилии, то применяется второй компаратор.
+Arrays.sort(people, Comparator
+    .comparing(Person::getLastName)
+    .thenComparing(Person::getFirstName));
+
+// люди сортируются по длине их имен:
+Arrays.sort(people, Comparator.comparing(Person::getName,
+    (s, t) -> Integer.compare(s.length(), t.length())));
+->
+Arrays.sort(people, Comparator.comparingInt(
+    p -> p.getName().length()));
+
+// методы nullFirst() и nullLast() принимающие имеющийся компаратор,
+// чтобы он не генерировал исключение при появлении пустых значений - null.
+Comparator.comparing(Person::getMiddleName(),
+    Comparator.nullFirst(...))
+->
+// производится статический импорт по директиве java.util.Comparator.*
+Arrays.sort(people, comparing(Person::getMiddleName, nullsFirst(naturalOrder())));
+
+// статический метод reverseOrder() производит сортировку в порядке,
+// обратном естественному (naturalOrder()).
+// naturalOrder().reversed() = reverseOrder()
+
+
+
+
 
 
 
