@@ -902,10 +902,31 @@ TalkingClock$TimePrinter(TalkingClock, TalkingClock$1);
 // Компилятор преобразует вызов конструктора в методе start() из класса TalkingClock
 new TalkingClock$TimePrinter (this, null)
 
+// page 320
+// 6.3.4. Локальные внутренние классы
 
+// Т.к. класс TimePrinter используется лишь однажды:
+// при создании объекта данного типа в методе start(),
+// его можно определить локально в отдельном методе (start())
+->
+public void start() {
+    class TimePrinter implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            System.out.println("Во время сигнала, время " + Instant.ofEpochMilli(event.getWhen()));
+            if (beep) Toolkit.getDefaultToolkit().beep();
+        }
+    }
+    var listener = new TimePrinter();
+    var timer = new Timer(interval, listener);
+    timer.start();
+}
 
-
-
+// В локальных внутренних классах не используются модификаторы:
+// 1. public
+// 2. protected
+// Преимущества локальных внутренних классах:
+// они полностью скрыты от внешнего кода и даже от остальной части класса TalkingClock
+// ни одному методу кроме start() ничего неизвестно о TimePrinter
 
 
 
