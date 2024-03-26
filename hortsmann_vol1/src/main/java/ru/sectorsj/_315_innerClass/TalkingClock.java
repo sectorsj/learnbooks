@@ -24,12 +24,12 @@ class TalkingClock {
     }
 
     public void start() {
-        var listener = new TimerPrinter();
+        var listener = new TimePrinter();
         var timer = new Timer(interval, listener);
         timer.start();
     }
 
-    public class TimerPrinter implements ActionListener {
+    public class TimePrinter implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
             System.out.println("Сигнал прозвучал в " + Instant.ofEpochMilli(event.getWhen()));

@@ -830,27 +830,77 @@ TalkingClock.TimePrinter listener = jabberer.new TimePrinter();
 ВнешнийКласс.ВнутреннийКласс
 
 
+// page 317
+// 6.3.3 О пользе, необходимости и безопасности внутренних классов
 
+// Обращение с внутренними классами происходит на уровне компилятора, а не виртуальной машины.
+// Для обозначения внутренних классов используется знак $, разделяющий имена внешних и внутренних классов.
+// -> для виртуальной машины внутренние классы неотличимы от внешних.
 
+// ВнутреннийКласс TimePrinter входящий в состав ВнешнегоКласса TalkingClock преобразуется компилятором в
+// -> TalkingClock$TimePrinter
 
+// javap -private ИмяКласса
 
+// Для UNIX:
+java reflection.ReflectionTest ВнутреннийКласс.TalkingClock\$TimePrinter
+или же так:
+javap -private ВнутреннийКласс.TalkingClock\$TimePrinter
+->
+public class innerClass.TalkingClock$TimePrinter implements java.awt.event.ActionListener {
+    final innerClass.TalkingClock this$0;
+    public innerClass.TalkingClock$TimePrinter(innerClass.TalkingClock);
+    public void actionPerformed(java.awt.event.ActionEvent);
+}
 
+// this$0 синтезируется компилятором, поэтому сослаться на него нельзя.
 
+class TalkingClock {
+    ...
+    public void start() {
+        var listener = new TimePrinter(this);
+        var timer = new Timer(interval, listener);
+        timer.start();
+    }
+}
 
+class TimePrinter implements ActionListener {
+    private TalkingClock outer;
+    ...
+    public TimePrinter(TalkingClock clock) {
+        outer = clock;
+    }
+}
 
+// Рассмотрим теперь метод actionPerformed().
+// Ему требуется доступ к полю outer.beep
+if (outer.beep) ... // ОШИБКА! ->
+// -> Внутренний класс может иметь доступ к закрытым данным лишь того внешнего класса, в который он входит.
+// Но класс TimePrinter уже не является внутренним, а следовательно, не имеет такого доступа.
 
+// Внутренние классы, намного эффективнее, чем обычные,
+// т.к. они обладают более высокими правами доступа.
 
+class TalkingClock {
+    private int interval;
+    private boolean beeр;
+    public TalkingClock(int, boolean);
+    static boolean access$0(TalkingClock);
+    public void start();
+}
 
+if (beep) -> if (TalkingClock.access$0(outer))
 
+// Если внутренний класс имеет доступ к закрытым полям,
+// можно создать другой класс, добавить его в тот же самый пакет
+// и получить доступ к закрытым данным.
 
-
-
-
-
-
-
-
-
+private TalkingClock$TimePrinter(TalkingClock);
+// чтобы вызвать такой конструктор, нужно вызвать второй конструктор
+->
+TalkingClock$TimePrinter(TalkingClock, TalkingClock$1);
+// Компилятор преобразует вызов конструктора в методе start() из класса TalkingClock
+new TalkingClock$TimePrinter (this, null)
 
 
 
