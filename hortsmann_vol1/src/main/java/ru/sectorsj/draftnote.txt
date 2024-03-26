@@ -789,7 +789,7 @@ public class TimerPrinter implements ActionListener {
 
     }
 }
-// в классе TimePrinter отсутствует поле bеер.
+// в классе TimePrinter отсутствует поле beep.
 // Вместо этого метод actionPerformed() обращается к соответствующему полю объекта типа TalkingClock.
 // Добавим в код ссылку на объект внешнего класса - other.
 ->
@@ -805,6 +805,60 @@ public class TimerPrinter implements ActionListener {
  }
 
  var = new TimePrinter(this); //параметр добавляется автоматически
+
+
+// page 316
+// 6.3.2 Специальные синтаксические правила для внутренних классов
+
+// ВнешнийКласс.this    - ссылка на внешний класс из внутреннего
+// Пример такой ссылки в классе TimerPrinter
+public void actionPerformed(ActionEvent event) {
+    ...
+    if (TalkingClock.this.beep) Toolkit.getDefaultToolkit().beep();
+}
+
+ОбъектВнешнегоКласса.new ВнутреннийКласс(параметры конструктора)
+
+// Пример:
+ActionListener listener = this.new TimePrinter();
+
+TalkingClock jabberer = new TalkingClock(1000, true);
+TalkingClock.TimePrinter listener = jabberer.new TimePrinter();
+
+// Если ссылка на внутренний класс делается
+// за пределами области действия внешнего класса,
+ВнешнийКласс.ВнутреннийКласс
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
