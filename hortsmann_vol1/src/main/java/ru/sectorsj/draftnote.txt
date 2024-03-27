@@ -1052,3 +1052,80 @@ new Object(){}.getClass().getEnclosingClass()       // получить клас
 // new Object(){}      - создается объект анонимного подкласса, производного от класса Object
 // qetEnclosinqClass() - метод получает объемлющий его класс, т.е. класс, содержащий статический метод.
 
+// page 325
+// 6.3.7 Статические внутренние классы
+// К примеру в массиве требуется найти максимальное и минимальное числа.
+
+double min = Double.MAX_VALUE;
+double max = Double.MIN_VALUE;
+for (double v : values) {
+    if (min > 0) min = v;
+    if (max < 0) max = v;
+}
+
+class Pair {
+    private double first;
+    private double second;
+
+    public Pair (double f, double s) {
+        first = f;
+        second = s;
+    }
+
+    public double getFitst() { return first; }
+    public double getSecond() { return second; }
+}
+
+class ArrayAlg {
+    public static Pair minmax (double[] values) {
+        ...
+        return new Pair(min, max);
+    }
+}
+
+Pair p = ArrayAlg.minmax(d);
+System.out.println("min =" + p.getFirst());
+System.out.println("max =" + p.getSecond());
+
+// сделать Pair внутренним классам в ArrayAlg
+-> ArrayAlg.Pair
+
+ArrayAlg.Pair p = ArrayAlg.Pair.minmax();
+
+class ArrayAlg {
+    public static class Pair {
+        ...
+    }
+    ...
+}
+
+// Только внутренние классы можно объявлять статическими.
+// Его объект не содержит ссылку на создавший его объект внешнего класса.
+
+public static Pair minmax (double[] values) {
+    ...
+    return new Pair(min, max);
+}
+
+// Если бы класс Pair не был объявлен статическим, компилятор сообщил бы,
+// что при инициализации объекта внугреннего класса объект типа ArrayAlg недоступен.
+
+// Статический вложенный класс применяется тогда,
+// когда доступ к объекту внутреннего класса не требуется.
+// Иногда для обозначения статических внутренних классов пользуются термином - вложенные классы.
+// В отличие от обычных внутренних классов, у статических внутренних классов
+// могут быть статические поля и методы.
+// Внутренние классы, определенные в интерфейсах,
+// автоматически считаются статическими и открытыми (т.e. static и public).
+
+
+
+
+
+
+
+
+
+
+
+
