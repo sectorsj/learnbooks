@@ -1118,6 +1118,47 @@ public static Pair minmax (double[] values) {
 // Внутренние классы, определенные в интерфейсах,
 // автоматически считаются статическими и открытыми (т.e. static и public).
 
+// page 329
+// 6.4 Загрузчики служб
+// Нужны для приложений с архитектурой подключаемых модулей.
+// В т.ч. для платформ, серверов приложений и прочих сложных решений.
+
+// Если предоставляется служба, то разработчику прикладной программы
+// необходимо дать определенную свободу в реализации функциональных средств данной службы.
+// Также желательно предоставить на выбор несколько реализаций службы.
+// Загрузку служб, соответствующих общему интерфейсу, позволяет упростить класс ServiceLoader.
+
+// С этой целью определяется интерфейс (или суперкласс) с методами,
+// которые должен предоставлять каждый экземпляр загружаемой службы.
+// К примеру, служба обеспечивает шифрование данных.
+
+package serviceLoader;
+public interface Cipher {
+    byte[] encrypt(byte[] source, byte[] key);
+    byte[] decrypt(byte[] source, byte[] key);
+    int strength();
+}
+
+package serviceLoader.impl;
+public class CaeserCipher implements Cipher {
+    public byte[] encrypt(byte[] source, byte[] key) {
+        var result = new byte[source.length];
+        for (int i = 0; i < source.length; i++){
+            result[i] = (byte) (source[i] + key[0]);
+        }
+        return resilt;
+    }
+
+    public byte[] decrypt(byte[] source, byte[] key) {
+        return encrypt(source, new byte[] {
+            (byte) - key[0]
+        });
+    }
+
+    public int strength() {
+        return 1;
+    }
+}
 
 
 
