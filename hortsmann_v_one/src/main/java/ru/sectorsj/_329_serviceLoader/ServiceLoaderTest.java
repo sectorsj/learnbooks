@@ -7,7 +7,7 @@ import java.util.ServiceLoader;
 public class ServiceLoaderTest {
     public static void main(String[] args) {
         // Optional<Cipher> cipher = cipherLoader.findFirst();
-        Cipher cipher = getCipher(1);
+        Cipher cipher = getCipher(3);
         System.out.println("Проверка main()");
 
         if (cipher != null) {
@@ -31,7 +31,7 @@ public class ServiceLoaderTest {
     public static Cipher getCipher(int minStrength) {
         // cipherLoader.iterator()
         for (Cipher cipher : cipherLoader) {
-            System.out.println("Загружен шифр: " + cipher.getClass().getName() + ", Стойкость: " + cipher.strength());
+            System.out.println("Загружен шифр: " + cipher.getClass().getName());
             System.out.println("Стойкость шифра: " + cipher.strength());
             if (cipher.strength() >= minStrength) {
                 System.out.println("Шифр найден с достаточной стойкостью.");

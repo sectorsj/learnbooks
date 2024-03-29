@@ -16,7 +16,7 @@
         <module>grokking_algorithms</module>
         <module>disignpatterns</module>
         <module>javamaster</module>
-        <module>hortsmann_vol1</module>
+        <module>hortsmann_v_one</module>
     </modules>
     <dependencies>
         <dependency>

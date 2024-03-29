@@ -5,9 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ru.sectorsj</groupId>
-  <artifactId>hortsmann_vol1</artifactId>
+  <artifactId>hortsmann_v_one</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>hortsmann_vol1</name>
+  <name>hortsmann_v_one</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -108,9 +108,6 @@
       <artifactId>toolbox</artifactId>
       <version>17.0.35</version>
     </dependency>
-
-
-
     <dependency>
       <groupId>com.github.almasb</groupId>
       <artifactId>fxgl</artifactId>
@@ -137,8 +134,8 @@
   </dependencies>
 
   <build>
-        <plugins>
-            <plugin>
+    <plugins>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
@@ -146,7 +143,7 @@
           <source>17</source>
           <target>17</target>
         </configuration>
-            </plugin>
+      </plugin>
       <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
@@ -156,7 +153,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>ru.sectorsj.hortsmann_vol1/ru.sectorsj._0_hello.HelloApplication</mainClass>
+              <mainClass>ru.sectorsj.hortsmann_v_one/ru.sectorsj._0_hello.HelloApplication</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
@@ -167,6 +164,6 @@
           </execution>
         </executions>
       </plugin>
-          </plugins>
+    </plugins>
   </build>
 </project>

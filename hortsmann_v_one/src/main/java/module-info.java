@@ -1,4 +1,4 @@
-module ru.sectorsj.hortsmann_vol1 {
+module ru.sectorsj.hortsmann_v_one {
     requires javafx.controls;
     requires javafx.fxml;
         requires javafx.web;
@@ -11,10 +11,10 @@ module ru.sectorsj.hortsmann_vol1 {
             requires eu.hansolo.fx.heatmap;
             requires com.almasb.fxgl.all;
 
-
     exports ru.sectorsj._0_hello;
     opens ru.sectorsj._0_hello to javafx.fxml;
     //opens ru.sectorsj._260_objectAnalyzer;
     //opens java.util; // Открываем пакет java.util для доступа из нашего модуля
     uses ru.sectorsj._329_serviceLoader.Cipher;
+    uses ru.sectorsj._329_serviceLoader.impl.CaesarCipher;
 }
