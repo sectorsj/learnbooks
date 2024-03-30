@@ -1161,6 +1161,111 @@ public class CaeserCipher implements Cipher {
 }
 
 
+// Пример:
+package ru.sectorsj._329_serviceLoader.impl;
+
+import ru.sectorsj._329_serviceLoader.Cipher;
+
+public class CaesarCipher implements Cipher {
+
+    @Override
+    public byte[] encrypt(byte[] source, byte[] key) {
+        var result = new byte[source.length];
+        for (int i = 0; i < source.length; i++) {
+            result[i] = (byte) (source[i] + key[0]);
+        }
+        return result;
+    }
+
+    @Override
+    public byte[] decrypt(byte[] source, byte[] key) {
+        return encrypt(source, new byte[]{
+                (byte) - key[0]
+        });
+    }
+
+    @Override
+    public int strength() {
+        return 1;
+    }
+}
+
+package ru.sectorsj._329_serviceLoader;
+
+public interface Cipher {
+    byte[] encrypt(byte[] source, byte[] key);
+    byte[] decrypt(byte[]source, byte[] key);
+    int strength();
+}
+
+
+package ru.sectorsj._329_serviceLoader;
+
+import java.util.Optional;
+import java.util.ServiceLoader;
+
+public class ServiceLoaderTest {
+    public static void main(String[] args) {
+        // Optional<Cipher> cipher = cipherLoader.findFirst();
+        Cipher cipher = getCipher(1);
+        System.out.println("Проверка main()");
+
+        if (cipher != null) {
+            byte[] dataToEncrypt = "Hello my old fiend".getBytes();
+            byte[] encryptionKey = {3};     // Ключ для шифрования
+
+
+            byte[] encryptedData = cipher.encrypt(dataToEncrypt, encryptionKey);
+            System.out.println("Шифруемые данные: " + new String(encryptedData));
+
+            byte[] decryptedData =cipher.decrypt(encryptedData, encryptionKey);
+            System.out.println("Дешифрованные данные: " + new String(decryptedData));
+
+        } else {
+            System.out.println("main(): Не найдена реализация шифра с необходимой стойкостью.");
+        }
+    }
+
+    public static ServiceLoader<Cipher> cipherLoader = ServiceLoader.load(Cipher.class);
+
+    public static Cipher getCipher(int minStrength) {
+        // cipherLoader.iterator()
+        for (Cipher cipher : cipherLoader) {
+            System.out.println("Загружен шифр: " + cipher.getClass().getName());
+            System.out.println("Стойкость шифра: " + cipher.strength());
+            if (cipher.strength() >= minStrength) {
+                System.out.println("Шифр найден с достаточной стойкостью.");
+                return cipher;
+            }
+        }
+        System.out.println("getCipher(): Не найдена реализация шифра с необходимой стойкостью.");
+        return null;
+    }
+
+    public static Optional<Cipher> getCipher2(int minStrength){
+        return cipherLoader.stream()
+                .filter(descr -> descr.type() == ru.sectorsj._329_serviceLoader.impl.CaesarCipher.class)
+                .findFirst()
+                .map(ServiceLoader.Provider::get);
+    }
+}
+
+
+директория:
+\src
+    \main
+        \resources
+            \META-INF
+                \services
+файл: ru.sectorsj._329_serviceLoader.Cipher
+содержание: ru.sectorsj._329_serviceLoader.impl.CaesarCipher
+
+// Также для работы в нашем модульном проекте понадобится:
+// в файле module-info.java указать следующие директивы:
+// module hortsmann_v_one {
+//     - uses ru.sectorsj._329_serviceLoader.Cipher;
+//     - provides Cipher with CaesarCipher;
+
 
 
 

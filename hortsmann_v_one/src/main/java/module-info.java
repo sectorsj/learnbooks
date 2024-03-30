@@ -1,3 +1,6 @@
+import ru.sectorsj._329_serviceLoader.Cipher;
+import ru.sectorsj._329_serviceLoader.impl.CaesarCipher;
+
 module hortsmann_v_one {
     requires javafx.controls;
     requires javafx.fxml;
@@ -13,7 +16,9 @@ module hortsmann_v_one {
 
     exports ru.sectorsj._0_hello;
     opens ru.sectorsj._0_hello to javafx.fxml;
+    // Открываем пакет java.util для доступа из нашего модуля
     //opens ru.sectorsj._260_objectAnalyzer;
-    //opens java.util; // Открываем пакет java.util для доступа из нашего модуля
+    //opens java.util;
     uses ru.sectorsj._329_serviceLoader.Cipher;
+    provides Cipher with CaesarCipher;
 }
