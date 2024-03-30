@@ -10,8 +10,8 @@ import java.time.Instant;
  Часы, выводящие время через регулярные промежутки
  */
 class TalkingClock {
-    private int interval;
-    private  boolean beep;
+    private final int interval;
+    private final boolean beep;
 
     /**
       Конструируем "говорящие часы"

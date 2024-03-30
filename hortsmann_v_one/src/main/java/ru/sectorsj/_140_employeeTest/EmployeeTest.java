@@ -21,9 +21,9 @@ public class EmployeeTest {
 }
 
 class Employee {
-    private String name;
+    private final String name;
     private double salary;
-    private LocalDate hireDay;
+    private final LocalDate hireDay;
 
     public Employee(String n, double s, int year, int month, int day) {
         name = n;

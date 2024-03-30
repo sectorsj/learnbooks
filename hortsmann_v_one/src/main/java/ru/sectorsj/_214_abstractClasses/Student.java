@@ -2,7 +2,7 @@ package ru.sectorsj._214_abstractClasses;
 
 class Student extends Person {
 
-    private String major;
+    private final String major;
 
     /**
      * @param name      Имя студента

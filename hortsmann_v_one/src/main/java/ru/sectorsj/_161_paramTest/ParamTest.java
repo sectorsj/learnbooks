@@ -51,7 +51,7 @@ public class ParamTest {
 class Employee {    // Упрощенный класс
 
     public static int nextId = 1;
-    private String name;
+    private final String name;
     private double salary;
 
     public Employee(String n, double s) {

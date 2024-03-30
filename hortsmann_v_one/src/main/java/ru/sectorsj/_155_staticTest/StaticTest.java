@@ -32,7 +32,7 @@ public class StaticTest {
 
 class Employee {
     private static int nextId = 1;
-    private String name;
+    private final String name;
     private double salary;
     private int id;
 

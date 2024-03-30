@@ -2,7 +2,7 @@ package ru.sectorsj._277_interfaces;
 
 class Employee implements Comparable<Employee> {
 
-    private String name;
+    private final String name;
     private double salary;
 
     public Employee(String name, double salary) {

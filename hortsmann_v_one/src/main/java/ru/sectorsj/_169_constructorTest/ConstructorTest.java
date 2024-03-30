@@ -18,7 +18,7 @@ class ConstructorTest {
 
 class Employee{
     private static int nextId;
-    private int id;
+    private final int id;
     private String name = "";
     private double salary;
 

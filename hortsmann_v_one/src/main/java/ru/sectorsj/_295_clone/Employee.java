@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 class Employee implements Cloneable {
-    private String name;
+    private final String name;
     private double salary;
     private Date hireDay;
 

@@ -12,7 +12,7 @@ public class ResTest {
         var icon = new ImageIcon(aboutURL);
 
         InputStream stream = cl.getResourceAsStream("/data/about.txt");
-        var about = new String(stream.readAllBytes(), "UTF-8");
+        var about = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
 
         InputStream stream2 = cl.getResourceAsStream("/corejava/title.txt");
         var title = new String(stream2.readAllBytes(), StandardCharsets.UTF_8).trim();

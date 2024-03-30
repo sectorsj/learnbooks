@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 class Employee extends Person {
     private double salary;
-    private LocalDate hireDay;
+    private final LocalDate hireDay;
 
 
     public Employee(String name, double salary, int year, int month, int day) {

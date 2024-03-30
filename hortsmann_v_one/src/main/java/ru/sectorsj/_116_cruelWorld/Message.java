@@ -8,7 +8,7 @@ class Message {
             System.out.print("Goodbye, ");
 
         for (int i = 1; i < args.length; i++)
-            System.out.print("" + args[i]);
+            System.out.print(args[i]);
             System.out.println("!");
     }
 }

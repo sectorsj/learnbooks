@@ -5,8 +5,8 @@ public class ArrayAlg {
      Пара чисел с плавающей точкой
      */
     public static class Pair {
-        private double first;
-        private double second;
+        private final double first;
+        private final double second;
 
         /**
          Составляем пару из двух чисел с плавающей точкой

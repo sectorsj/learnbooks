@@ -6,9 +6,9 @@ enum Size {
     LARGE("L"),
     EXTRA_LARGE("XL");
 
-    private String abbreviation;
+    private final String abbreviation;
 
-    private Size(String abbreviation){
+    Size(String abbreviation){
         this.abbreviation = abbreviation;
     }
 
