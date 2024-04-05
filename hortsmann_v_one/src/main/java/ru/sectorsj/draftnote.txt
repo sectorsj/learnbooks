@@ -1377,11 +1377,62 @@ public static void main(String[] args) {
 288.toString()
 
 
+// page 336
+// 6.5.3 Свойства прокси-классов
+
+// Если дважды вызвать метод newProxyinstance() для одного и того же загрузчика классов и массива интерфейсов,
+// будут получены два объекта одного и того же класса.
+// Имя этого класса можно определить с помощью метода getProxyClass() следующим образом:
+
+Class proxyClass = Proxy.getProxyClass(null, interfaces);
+
+Прокси-класс всегда:
+- открытый (public)
+- конечный (final)
+
+// 1. Если все интерфейсы, которые реализуются прокси-классом, объявлены как public,
+//    этот класс не принадлежит ни одному конкретному пакету.
+
+// В package1
+public interface Interface1 { void method1(); }
+public interface Interface2 { void method2(); }
+// В package2
+public class ProxyClass implements Interface1, Interface2 {
+    public void method1() {
+        System.out.println("Implementation of method1");
+    }
+    public void method2() {
+        System.out.println("Implementation of method2");
+    }
+}
+// В этом примере оба интерфейса (Interface1 и Interface2) объявлены с модификатором доступа public,
+// поэтому ProxyClass может быть размещен в любом месте, не принадлежащем конкретному пакету.
 
 
+// 2. В противном случае все интерфейсы, в объявлении которых не указан модификатор доступа public,
+//    а следовательно, и сам прокси-класс, должны принадлежать одному пакету.
+
+// В package1
+interface Interface1 { void method1(); }
+// В package2
+public interface Interface2 { void method2(); }
+
+// В package2
+public class ProxyClass implements Interface1, Interface2 {
+    public void method1() {
+        System.out.println("Implementation of method1");
+    }
+    public void method2() {
+        System.out.println("Implementation of method2");
+    }
+}
+// Здесь Interface1 объявлен без модификатора доступа public, в то время как Interface2 является public.
+// Следовательно, ProxyClass и оба интерфейса должны принадлежать одному пакету.
+// В данном случае все они принадлежат package2.
 
 
-
+// Вызвав метод isProxyClass() из класса Proxy, можно проверить,
+// представляет ли объект типа Class определенный прокси-класс.
 
 
 
