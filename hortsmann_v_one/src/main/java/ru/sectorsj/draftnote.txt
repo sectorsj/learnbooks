@@ -1672,6 +1672,54 @@ try {
 }
 
 
+// page 351
+// 7.2.З. Повторное генерирование и связывание исключений в цепочку
+
+// Исключение можно генерировать и в блоке catch, образуя тем самым цепочку исключений.
+// Если разрабатывается подсистема для применения другими разработчиками,
+// то имеет смысл генерировать исключения, указывающие на то,
+// что ошибка возникла именно в этой подсистеме.
+
+try {
+    // получить доступ к базе данных
+} catch (SQLException ex) {
+    // текст сообщения об исключении формируется в конструкторе класса ServletException.
+    throw new ServletException("database error: " + ex.getMessage());
+}
+
+try {
+    // получить доступ к БД
+} catch (SQLException original) {
+    var e = new ServletException("database error");
+    e.initCause(original);
+    throw e;
+}
+
+// При перехвате последующего исключения, предыдущее исключение можно извлечь следующим образом:
+Throwable original = caughtException.getCause();
+
+// Регистрация исключения и повторная его генерация, без всяких изменений:
+try {
+    // получить доступ к БД
+} catch (Exception e) {
+    logger.log(level, message, e);
+    throw e;
+}
+-> // допустимо после версии java 7:
+public void updateRecord() throws SQLException
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
