@@ -1562,8 +1562,28 @@ throw new EOFException(gripe);
 // 2. Создать экземпляр этого класса
 // 3. Сгенерировать исключение
 
+// page 347
+// 7.1.4 Создание классов исключений
 
+// Создание своего собственного класса исключения
+class FileFormatException extends IOException {
+    public FileFormatException() {}
+    public FileFormatException(String gripe) {
+        super(gripe);
+    }
+}
 
+// Генерация исключения собственного типа
+String readData (BufferedReader in) throws FileFormatException {
+    ...
+    while (...) {
+        if (ch == -1) // достигнут конец файла (признак EOF) {
+            if (n < len) throw new FileFormatException();
+        }
+        ...
+    }
+    return s
+}
 
 
 
