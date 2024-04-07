@@ -1530,10 +1530,37 @@ Class MyAnimation {
 // Если же в объявлении метода не сообщается обо всех проверяемых исключениях,
 // компилятор выдаст сообщение об ошибке.
 
+// page 346
+// 7.1.З Порядок генерирования исключений
 
+readData()
+// в заголовке указано Content-length: 1024
+// но после 733 символа достигнут конец файла
+->
+throw new EOFException();
+// или
+var e = new EOFException();
+throw e;
 
+String readData(Scanner in) throws EOFException {
+    ...
+    while(...) {
+        if (!in.hasNext()) {     // достигнут конец файла (признак EOF)
+           if (n < len) throw new EOFException();
+        }
+        ...
+    }
+    return s;
+}
 
+// В классе EOFException имеется второй конструктор,
+// получающий в качестве параметра символьную строку.
+String gripe = "Content-length: " + len + ", Received: " + n;
+throw new EOFException(gripe);
 
+// 1. Найти подходящий класс
+// 2. Создать экземпляр этого класса
+// 3. Сгенерировать исключение
 
 
 
