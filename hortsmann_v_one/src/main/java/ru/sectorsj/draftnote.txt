@@ -1957,10 +1957,36 @@ var out = new StringWriter();
 t.printStackTrace(new PrintWriter(out));
 String description = out.toString();
 
+// можно использовать StackWalker ->
+// StackWalker.StackFrame
 
+StackWalker walker = StackWalker.getInstance();
+walker.forEach (frame -> проанализировать frame)
 
+// В классе StackWalker.StackFrarne имеются методы для получения:
+// - имени файла
+// - номера строки кода,
+// - объекта анализируемого класса
+// - имени метода из исполняемой строки кода.
 
-
+// Вычисление факториала числа 3
+// Результаты трассировки стека вызова factorial(3):
+Введите n: 3
+factorial(3):
+hortsmann_v_one/ru.sectorsj._357_stackTrace.StackTraceTest.factorial(StackTraceTest.java:22)
+hortsmann_v_one/ru.sectorsj._357_stackTrace.StackTraceTest.main(StackTraceTest.java:10)
+factorial(2):
+hortsmann_v_one/ru.sectorsj._357_stackTrace.StackTraceTest.factorial(StackTraceTest.java:22)
+hortsmann_v_one/ru.sectorsj._357_stackTrace.StackTraceTest.factorial(StackTraceTest.java:25)
+hortsmann_v_one/ru.sectorsj._357_stackTrace.StackTraceTest.main(StackTraceTest.java:10)
+factorial(1):
+hortsmann_v_one/ru.sectorsj._357_stackTrace.StackTraceTest.factorial(StackTraceTest.java:22)
+hortsmann_v_one/ru.sectorsj._357_stackTrace.StackTraceTest.factorial(StackTraceTest.java:25)
+hortsmann_v_one/ru.sectorsj._357_stackTrace.StackTraceTest.factorial(StackTraceTest.java:25)
+hortsmann_v_one/ru.sectorsj._357_stackTrace.StackTraceTest.main(StackTraceTest.java:10)
+return 1
+return 2
+return 6
 
 
 
