@@ -2331,3 +2331,94 @@ try {
 } catch (IOException e) {
     Logger.getLogger("com.mycompany.myapp").log(Level.WARNING, "Reader image", e);
 }
+
+// page 371
+// 7.5.3 Смена диспетчера протоколирования
+
+// Свойства системы протоколирования можно изменить, редактируя конфигурационный файл,
+// по умолчанию находящийся по следующему пути:
+// conf/loggin.properties
+// или
+// jre/lib/logging.properties
+
+// Если требуется сменить конфигурационный файл, при запуске приложения,
+// необходимо установить свойство "java.util.logging.config.file" на ->
+// command: java -Djava.util.logging.conf.file=конфигурационный_файл Главный класс
+
+// Чтобы изменить уровень протоколирования, принятый по умолчанию,
+// необходимо отредакгировать конфиrурационный файл, изменив в нем следующую строку:
+    .level=INFO
+
+// Чтобы в собственных регистраторах изменить уровни протоколирования
+// необходимо добавить к имени регистратора суффикс ".level":
+com.mycompany.myapp.level=FINE
+
+// Регистраторы не направляют сообщения на консоль
+// Направлять сообщения в консоль - задача обработчиков протоколов
+
+// Чтобы вывести на консоль сообщения, имеющие уровень FINE нужно:
+java.util.logging.ConsoleHandler.level=FINE
+
+// Параметры настройки диспетчера протоколирования не являются системными свойствами.
+// Запуск прикладной программы с параметром:
+// command: -Dcom.mycompany.myapp.level=FINE
+// никак не отражается на действиях регистратора.
+
+// Если нужно настроить протоколирование программно в коде, не используя файл конфигурации
+// или параметр командной строки, это можно сделать:
+System.setProperty("java.util.logging.config.file", file);
+
+// Пример:
+System.setProperty("java.util.logging.config.file", "C:/Program Files/Java/jdk/jdk-21.0.2/conf.logging.properties");
+
+// Повторная инициализация диспетчера протоколирования:
+// После установки свойства конфигурации протоколирования программно с помощью System.setProperty(),
+// также нужно повторно инициализировать диспетчер протоколирования с помощью
+LogManager.getLogManager().readConfiguration().
+// Это гарантирует, что новая конфигурация будет применена.
+// Пример:
+try {
+    LogManager.getLogManager().readConfiguration();
+} catch (IOException e) {
+    System.err.println ("Не удалось прочитать файл конфигурации протоколирования");
+    e.printStackTrace();
+}
+
+// Hачиная с версии java 9, можно обновить конфигурацию логирования с помощью:
+LogManager.getLogManager().updateConfiguration(mapper);
+
+// для определения значений по всем ключам в прежней или новой конфигурации
+// применяется специальный сопоставитель типа:
+Function<String, BiFunction<String, String, String>>
+
+// В качестве удобной схемы сопоставления можно было бы объединить прежние и новые конфигурации,
+// отдав предпочтение новому значению, когда ключ присутствует как в прежних,
+// так и в новых конфигурациях:
+key -> ((oldValue, newValue) -> newValue == null ? oldValue : newValue)
+
+// Если требуется лишь обновить ключи, начиная с com.mycompany, оставив остальные ключи без изменения:
+key -> key.startWith("com.mycompany")
+    ? ((oldValue, newValue) -> newValue)
+    : ((oldValue, newValue) -> oldValue)
+
+// Для изменения поведения по умолчанию можно использовать следующие подходы:
+// 1. Изменение менеджера протоколирования:
+System.setProperty("java.util.logging.manager", "com.example.MyLogManager");
+
+// 2. Изменение настроек без изменения менеджера протоколирования:
+System.setProperty("java.util.logging.config.class", "com.example.MyLoggingConfigurator");
+
+// затем в классе MyLoggingConfigurator:
+
+package com.example;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class MyLoggingConfigurator {
+    public static void configure() {
+        // Настройки протоколирования
+        Logger logger = Logger.getLogger("");
+        logger.setLevel(Level.FINE);
+    }
+}
