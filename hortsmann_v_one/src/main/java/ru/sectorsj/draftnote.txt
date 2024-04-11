@@ -2239,3 +2239,95 @@ Logger.getGlobal().info("File-> Open menu item selected");
 ->
 // По умолчанию выводится следующая протокольная запись:
 // Мау 10, 2013 10:12:15 РМ LoggingimageViewer fileOpen INFO: File->Open menu item selected
+
+
+// page 369
+// 7.5.2 Продвинутое логирование
+
+// При профессиональной разработке приложений, все записи не накапливаются в одном глобальном протоколе (логе),
+поэтому можно определить свои собственные средства протоколирования (логирования).
+
+// Регистратор, на который больше не делается ссылка ни в одной из переменных, собирается в "мусор".
+// по-этому, следует сохранить ссылку на регистратор в статической переменной, как показано ниже!
+
+// Для создания или извлечения "регистратора" вызывается метод - getLogger():
+private static final Logger myLogger = Logger.getLogger("com.my.company.myapp");
+
+// Как и имена пакетов, имена регистраторов образуют иерархию.
+// иерархичные = регистратор > пакет ->
+// Если в регистраторе "com.mycompany" задать определенный уровень протоколирования,
+// то производный от него регистратор унаследует этот уровень.
+
+// 7 уровней протоколирования (логирования):
+// 1. SEVERE  - используется по умолчанию
+// 2. WARNING - используется по умолчанию
+// 3. INFO    - используется по умолчанию
+// 4. CONFIG  - нужно задавать методом setLevel()
+// 5. FINE    - нужно задавать методом setLevel() -> logger.setLevel(Level.FINE);
+// 6. FINER   - нужно задавать методом setLevel()
+// 7. FINEST  - нужно задавать методом setLevel()
+
+logger.setLevel(Level.ALL)                  // Разрешение логирования на всех уровнях
+Logger.getGlobal().setLevel(Level.ALL);     // Разрешение логирования на всех уровнях, Глобально
+
+logger.setLevel(Level.OFF)                  // Полностью запрещает протоколирование (логирование)
+Logger.getGlobal().setLevel(Level.OFF);     // Полностью запрещает логирование, Глобально
+
+// Для всех уровней определены методы протоколирования:
+logger.warning(message);
+logger.fine(message);
+
+logger.log(Level.FINE, message);    // метод log() - явно указать уровень логирования
+
+// Для отладочных сообщений, требующихся для диагностики программ (не для пользователей), следует указывать уровни:
+// - CONFIG
+// - FINE
+// - FINER
+// - FINEST
+
+// Обработчик протоколов блокирует сообщения, имеющие уровень ниже INFO.
+
+// Протокольная запись, создаваемая по умолчанию, состоит из:
+// - имени класса
+// - имени метода, содержащего вызов регистратора
+
+// Для уточнения вызывающего класса и метода следует применить метод logp():
+void logp(Level l, String className, String method, String message)
+
+// Для отслеживания порядка выполнения диагностируемой программы есть методы:
+void entering(String className, String methodName);
+void entering(String className, String methodName, Object param);
+void entering(String className, String methodName, Object[] params);
+void exiting(String className, String methodName);
+void exiting(String className, String methodName, Object result);
+
+// пример:
+int read(String file, String pattern) {
+    logger.entering("com.mymompany.mylib.Reader", "read", new Object[] {file, pattern});
+    ...
+    logger.exiting("com.mycompany.mylib.Reader", "read", count);
+    return count;
+}
+
+// Если методы протоколирования будут поддерживать
+// переменное число параметров, то тогда станет доступна запись:
+logger.entering("com.mycompany.mylib.Reader", "read", file, pattern);
+
+// 2 метода для логирования неожиданных исключений:
+void throwing (String className, StringMethodName, Throwable t);
+void log (Level l, String message, Throwable t);
+
+// При вызове метода throwing() регистрируется протокольная запись,
+// имеющая уровень FINER, а также сообщение, начинающееся со строки THROW
+//
+if (...) {
+    IOException exception = new IOException("...");
+    logger.throwing("com.mycompany.mylib.Reader", "read", exception);
+    throw exception;
+}
+и
+try {
+    ...
+} catch (IOException e) {
+    Logger.getLogger("com.mycompany.myapp").log(Level.WARNING, "Reader image", e);
+}
