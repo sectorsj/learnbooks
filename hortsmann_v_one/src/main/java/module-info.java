@@ -22,4 +22,5 @@ module hortsmann_v_one {
     //opens java.util;
     uses ru.sectorsj._329_serviceLoader.Cipher;
     provides Cipher with CaesarCipher;
+    opens ru.sectorsj._380_logging;
 }
