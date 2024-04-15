@@ -13,6 +13,7 @@ module hortsmann_v_one {
     requires eu.hansolo.tilesfx;
     requires eu.hansolo.fx.heatmap;
     requires com.almasb.fxgl.all;
+    requires java.logging;
 
     exports ru.sectorsj._0_hello;
     opens ru.sectorsj._0_hello to javafx.fxml;
