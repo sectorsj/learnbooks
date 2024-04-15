@@ -2710,3 +2710,6 @@ boolean isLoggable (LogRecord record)
       } catch (SomeException e) {
         logger.log(Level.FINE, "пояснения...", e);
       }
+
+// программа из листинга 7.2 работает, но в модульном проекте нужно правельно настроить
+// GOTO рабобраться с этим
