@@ -17,10 +17,11 @@ module hortsmann_v_one {
 
     exports ru.sectorsj._0_hello;
     opens ru.sectorsj._0_hello to javafx.fxml;
+    exports ru.sectorsj._380_logging;
+    uses ru.sectorsj._380_logging.LoggingImageViewer;
     // Открываем пакет java.util для доступа из нашего модуля
     //opens ru.sectorsj._260_objectAnalyzer;
     //opens java.util;
     uses ru.sectorsj._329_serviceLoader.Cipher;
     provides Cipher with CaesarCipher;
-    exports ru.sectorsj._380_logging;
 }
