@@ -1,6 +1,6 @@
 package ru.sectorsj._327_staticInnerClass;
 
-public class ArrayAlg {
+class ArrayAlg {
     /**
      Пара чисел с плавающей точкой
      */
