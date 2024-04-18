@@ -1,6 +1,6 @@
 package ru.sectorsj._397_pair1;
 
-public class Pair<T> {
+class Pair<T> {
     private T first;
     private T second;
 
