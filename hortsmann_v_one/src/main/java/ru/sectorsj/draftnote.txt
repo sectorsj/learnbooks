@@ -3310,3 +3310,78 @@ public class Main {
         System.out.println(str); // Вывод: Пример
     }
 }
+
+// page 402
+// 8.5.1 Стирание типов (подробнее)
+
+// Всякий раз, когда определяется обобщенный тип,
+// автоматически создается соответствующий ему базовый ("сырой") тип.
+// Имя этого типа совпадает с именем обобщенного типа с удаленными параметрами типа.
+// Переменные типа стираются и заменяются ограничивающими типами
+// (или типом Object, если переменная не имеет ограничений).
+
+// К примеру базовый тип для обобщенного типа Pair<T> выглядит следующим образом:
+public class Pair {
+    private Object first;
+    private Object second;
+
+    public Pair(Object first, Object second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public Object getFirst() {return first;}
+    public Object getSecond() {return second;}
+
+    public void setFirst (Object newValue) {
+        first = newValue;
+    }
+    public void setSecond (Object newValue) {
+        second = newValue;
+    }
+}
+
+// Если Т - неограниченная переменная типа, то ее тип просто заменяется на Object.
+// В итоге получается обычный класс вроде тех, что реализовывались до появления обобщений в Java.
+
+// Прикладные программы могут содержать разные варианты обобщенного класса Pair,
+// в том числе Pair<String> или Pair<GregorianCalendar>,
+// но в результате стирания все они приводятся к базовым типам Pair.
+
+// Базовый тип заменяет тип переменных первым накладываемым на них ограничением или же типом Object,
+// если никаких ограничений не предусмотрено.
+
+// Например, у переменной типа в обобщенном классе Pair<T> отсутствуют явные ограничения,
+// поэтому базовый тип заменяет обобщенный тип Т на Object.
+
+// Допустим, что объявлен несколько иной обобщенный тип:
+
+public class Interval<T extends Comparable & Serializable> implements Serializable {
+    private T lower;
+    private T upper;
+    ...
+    public Interval (T first, T second) {
+        if (first.compareTo (second) <= 0) {
+            lower = first;
+            upper = second;
+        } else {
+            lower = second;
+            upper = first;
+        }
+    }
+}
+
+public class Interval implements Serializable {
+    private Comparable lower;
+    private Comparable upper;
+    ...
+    public Interval (Comparable first, Comparable second) {
+        ...
+    }
+}
+// А если поменять местами ограничения class Interval<Serializable & Comparable>:
+
+// базовый тип заменит обобщенный тип T на Serializable, а компилятор произведет там,
+// где требуется, приведение к типу Comparable.
+// Поэтому ради эффективности в конце списка ограничений следует размещать отмечающие (маркерные) интерфейсы
+(т.е. интерфейсы без методов).
