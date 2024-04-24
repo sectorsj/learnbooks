@@ -5,7 +5,7 @@ Employee <|-- Manager
 
 class "Pair<Employee>" as Pair1
 class "Pair<Manager>" as Pair2
-note "Отношение наследования отсутствует" as N1
+note "Отношение \nнаследования \nотсутствует" as N1
 
 Pair1..N1
 Pair2..N1

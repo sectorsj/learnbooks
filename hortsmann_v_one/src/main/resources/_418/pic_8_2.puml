@@ -1,3 +1,27 @@
 @startuml
+'https://plantuml.com/class-diagram
+
+interface List1 <Base type>
+interface List2 <Manager>
+interface List3 <Employee>
+
+List1 <|-- List2
+List1 <|-- List3
+
+class ArrayList1<Base type>
+class ArrayList2<Manager>
+class ArrayList3<Employee>
+
+List1 <|..ArrayList1
+List2 <|..ArrayList2
+List3 <|..ArrayList3
+ArrayList1 <|-- ArrayList2
+ArrayList1 <|-- ArrayList3
+
+note "Отношение \nнаследования \nотсутствует" as N1
+
+ArrayList2..N1
+ArrayList3..N1
+
 
 @enduml
