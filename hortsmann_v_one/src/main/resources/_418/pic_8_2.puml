@@ -1,27 +1,27 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-interface List1 <Base type>
-interface List2 <Manager>
-interface List3 <Employee>
+interface "List <Base type>" as interface1
+interface "List <Manager>" as interface2
+interface "List <Employee>" as interface3
 
-List1 <|-- List2
-List1 <|-- List3
+interface1 <|-- interface2
+interface1 <|-- interface3
 
-class ArrayList1<Base type>
-class ArrayList2<Manager>
-class ArrayList3<Employee>
+class "ArrayList<Base type>"  as class1
+class "ArrayList<Manager>" as class2
+class "ArrayList<Employee>" as class3
 
-List1 <|..ArrayList1
-List2 <|..ArrayList2
-List3 <|..ArrayList3
-ArrayList1 <|-- ArrayList2
-ArrayList1 <|-- ArrayList3
+interface1 <|..class1
+interface2 <|..class2
+interface3 <|..class3
+class1 <|-- class2
+class1 <|-- class3
 
 note "Отношение \nнаследования \nотсутствует" as N1
 
-ArrayList2..N1
-ArrayList3..N1
+class2..N1
+class3..N1
 
 
 @enduml

@@ -1,0 +1,8 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class "class<Base>" as class1
+class "class" as class2
+
+
+@enduml
