@@ -1,14 +1,17 @@
 @startuml
-'https://plantuml.com/class-diagram
+title
+Рис. 8.2. Отношения наследования подтипов
+между обобщенными типами списков
+end title
 
-interface "List <Base type>" as interface1
+interface "List <raw>" as interface1
 interface "List <Manager>" as interface2
 interface "List <Employee>" as interface3
 
 interface1 <|-- interface2
 interface1 <|-- interface3
 
-class "ArrayList<Base type>"  as class1
+class "ArrayList<raw>"  as class1
 class "ArrayList<Manager>" as class2
 class "ArrayList<Employee>" as class3
 
@@ -18,7 +21,7 @@ interface3 <|..class3
 class1 <|-- class2
 class1 <|-- class3
 
-note "Отношение \nнаследования \nотсутствует" as N1
+note "Отношение \nнаследования \nотсутствует!" as N1
 
 class2..N1
 class3..N1

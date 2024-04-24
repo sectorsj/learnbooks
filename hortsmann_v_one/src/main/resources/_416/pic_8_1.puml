@@ -1,11 +1,15 @@
 @startuml
-'https://plantuml.com/class-diagram
+title
+Рис. 8.1. Отношение наследования между
+обобщенными классами Pair отсутствует
+end title
+
 
 Employee <|-- Manager
 
 class "Pair<Employee>" as Pair1
 class "Pair<Manager>" as Pair2
-note "Отношение \nнаследования \nотсутствует" as N1
+note "Отношение \nнаследования \nотсутствует!" as N1
 
 Pair1..N1
 Pair2..N1

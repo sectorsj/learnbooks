@@ -1,0 +1,16 @@
+@startuml
+title
+рис. 8.3 Отношения наследования
+подтипов с подстановками
+end title
+
+class "Pair <raw>" as class1
+class "Pair <? extends Employee>" as class2
+class "Pair <Manager>" as class3
+class "Pair <Employee>" as class4
+
+class1 <|-- class2
+class2 <|-- class3
+class2 <|-- class4
+
+@enduml
