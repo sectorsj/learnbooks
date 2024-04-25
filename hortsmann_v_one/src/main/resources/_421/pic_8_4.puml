@@ -1,0 +1,17 @@
+@startuml
+title
+рис. 8.4 Подстановка с ограничением супертипа
+end title
+
+class "Pair <raw>" as class1
+class "Pair <?>" as class2
+class "Pair <? super Manager>" as class3
+class "Pair <Employee>" as class4
+class "Pair <Object>" as class5
+
+class1 <|-- class2
+class2 <|-- class3
+class3 <|-- class4
+class3 <|-- class5
+
+@enduml
