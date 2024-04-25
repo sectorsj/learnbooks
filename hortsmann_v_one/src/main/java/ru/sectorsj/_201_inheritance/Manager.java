@@ -1,6 +1,6 @@
 package ru.sectorsj._201_inheritance;
 
-public class Manager extends Employee {
+class Manager extends Employee {
     private  double bonus;
 
     /**
