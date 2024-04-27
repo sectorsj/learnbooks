@@ -1,0 +1,20 @@
+@startuml
+title
+рис. 8.5 Иерархия
+наследования интерфейса Type
+end title
+
+interface "Type " as int1
+class "Class <T>" as class1
+interface "TypeVariable" as int2
+interface "Wildcard" as int3
+interface "ParametrizedType" as int4
+interface "GenericArrayType" as int5
+
+int1 <|.. class1
+int1 <|-- int2
+int1 <|-- int3
+int1 <|-- int4
+int1 <|-- int5
+
+@enduml
