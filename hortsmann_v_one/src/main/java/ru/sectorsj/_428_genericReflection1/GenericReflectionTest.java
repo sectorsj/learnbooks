@@ -1,4 +1,4 @@
-package ru.sectorsj._428_genericFreflection;
+package ru.sectorsj._428_genericReflection1;
 
 import java.lang.reflect.*;
 import java.util.Arrays;
