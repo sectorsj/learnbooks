@@ -1,0 +1,21 @@
+@startuml
+title
+Рис. 9.5.2 Классы из каркаса коллекций в Java
+(AbstractMap)
+end title
+
+abstract class "AbstractMap" as cl1{}
+class "HashMap" as cl2{}
+class "LinkedHashMap" as cl3{}
+class "TreeMap" as cl4{}
+class "EnumMap" as cl5{}
+class "WeakHashMap" as cl6{}
+class "IdentityHashMap" as cl7{}
+
+cl1 <|-- cl2
+cl2 <|-- cl3
+cl1 <|-- cl4
+cl1 <|-- cl5
+cl1 <|-- cl6
+cl1 <|-- cl7
+@enduml

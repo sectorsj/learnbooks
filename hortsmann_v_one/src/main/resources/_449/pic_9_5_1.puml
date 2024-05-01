@@ -1,0 +1,42 @@
+@startuml
+title
+Рис. 9.5.1 Классы из каркаса коллекций в Java
+(AbstractCollection)
+
+end title
+
+abstract class "AbstractCollection" as cl1 {}
+abstract class "AbstractList" as cl2 {}
+abstract class "AbstractSet" as cl3 {}
+abstract class "AbstractQueue" as cl4 {}
+
+abstract class "AbstractSequentialList" as cl5 {}
+class "LinkedList" as cl6 {}
+class "ArrayList" as cl7 {}
+
+class "HashSet" as cl8 {}
+class "LinkedHashSet" as cl9 {}
+class "EnumSet" as cl10 {}
+class "TreeSet" as cl11 {}
+
+class "PriorityQueue" as cl12 {}
+class "ArrayQueue" as cl13 {}
+
+
+cl1 <|-- cl2
+cl1 <|-- cl3
+cl1 <|-- cl4
+
+cl2 <|-- cl5
+cl5 <|-- cl6
+cl2 <|-- cl7
+
+cl3 <|-- cl8
+cl8 <|-- cl9
+cl3 <|-- cl10
+cl3 <|-- cl11
+
+cl4 <|-- cl12
+cl1 <|-- cl13
+
+@enduml

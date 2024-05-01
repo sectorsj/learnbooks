@@ -1,0 +1,35 @@
+@startuml
+'https://plantuml.com/class-diagram
+title
+рис. 9.4 Интерфейсы в каркасе коллекций Java
+end title
+
+interface "Iterable" as int1
+interface "Collection" as int2
+interface "List" as int3
+interface "Set" as int4
+interface "Queue" as int5
+interface "Map" as int6
+interface "Iterator" as int7
+interface "RandomAccess" as int8
+interface "SortedMap" as int9
+interface "ListIterator" as int10
+interface "SortedSet" as int11
+interface "Deque" as int12
+interface "NavigableMap" as int13
+interface "NavigableSet" as int14
+
+int1 <|-- int2
+int2 <|-- int3
+int2 <|-- int4
+int2 <|-- int5
+
+int6 <|-- int9
+int7 <|-- int10
+int9 <|-- int13
+
+int4 <|-- int11
+int5 <|-- int12
+int11 <|-- int14
+
+@enduml
