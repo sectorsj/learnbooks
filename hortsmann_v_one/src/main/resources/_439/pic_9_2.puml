@@ -1,0 +1,89 @@
+@startuml
+title
+Рис. 9.2. Разные реализации очереди
+end title
+
+
+left to right direction
+
+interface "Link" as int1 {
++ data
+----
++ next elem
+}
+
+interface "Link" as int2 {
++ data
+----
++ next elem
+}
+
+interface "Link" as int3 {
++ data
+----
++ next elem
+}
+
+interface "Link" as int4 {
++ data
+----
++ next elem
+}
+
+int1::next --> int2::data
+int2::next --> int3::data
+int3::next --> int4::data
+
+note as n2
+голова
+end note
+
+note as n3
+хвост
+end note
+
+n2 -- int1
+int4 -- n3
+
+
+
+note as n1
+Связный список
+end note
+
+interface "Queue" as intQueue {
+3
+----
+2
+----
+1
+----
+...
+----
+...
+----
+...
+----
+...
+----
+4
+----
+}
+
+note as n5
+голова
+end note
+
+note as n6
+хвост
+end note
+
+intQueue::1 -- n5
+intQueue::4 -- n6
+
+note as n4
+Циклический массив
+end note
+
+@enduml
+
