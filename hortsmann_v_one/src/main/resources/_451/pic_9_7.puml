@@ -1,0 +1,43 @@
+@startuml
+
+title
+Рис. 9.7. Двунаправленный связный список
+end title
+
+top to bottom direction
+
+interface "LinkedList" as LinkedList {
++ первыйЭлемент
+}
+
+interface "Link1" as link1 {
++ данные
+----
++ следующийЭлемент
+----
++ предыдущийЭлемент
+}
+
+interface "Link2" as link2 {
++ данные
+----
++ следующийЭлемент
+----
++ предыдущийЭлемент
+}
+
+interface "Link3" as link3 {
++ данные
+----
++ следующийЭлемент
+----
++ предыдущийЭлемент
+}
+
+LinkedList::первыйЭлемент --> link1
+link1::следующийЭлемент --> link2
+link2::предыдущийЭлемент --> link1
+link2::следующийЭлемент --> link3
+link3::предыдущийЭлемент --> link2
+
+@enduml
