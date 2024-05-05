@@ -32,6 +32,7 @@ public class SetTest {
         for (int i = 1; i <= counter && iter.hasNext(); i++) {
             System.out.println(iter.next());
         }
+
         System.out.println("\nанализ завершен\n");
         System.out.println("Всего слов в тексте: " + totalWords);
         System.out.println("Уникальных слов: " + words.size());
