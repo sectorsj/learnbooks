@@ -1,0 +1,31 @@
+└── java.util
+    ├── Collection<E> (interface)
+    │   ├── Set<E> (interface, extends Collection<E>)
+    │   │   ├── HashSet<E> (implements Set<E>)
+    │   │   ├── LinkedHashSet<E> (extends HashSet<E>, implements Set<E>)
+    │   │   └── TreeSet<E> (extends AbstractSet<E>, implements NavigableSet<E>)
+    │   ├── List<E> (interface, extends Collection<E>)
+    │   │   ├── ArrayList<E> (extends AbstractList<E>, implements List<E>, RandomAccess)
+    │   │   ├── LinkedList<E> (extends AbstractSequentialList<E>, implements List<E>, Deque<E>)
+    │   │   └── Vector<E> (extends AbstractList<E>, implements List<E>, RandomAccess)
+    │   │       └── Stack<E> (extends Vector<E>, abstract class)
+    │   └── Queue<E> (interface, extends Collection<E>)
+    │       ├── LinkedList<E> (implements Queue<E>)
+    │       ├── PriorityQueue<E> (extends AbstractQueue<E>, implements Queue<E>)
+    │       └── Deque<E> (interface, extends Queue<E>)
+    │           ├── ArrayDeque<E> (extends AbstractCollection<E>, implements Deque<E>)
+    │           └── LinkedList<E> (implements Deque<E>)
+    ├── Map<K,V> (interface) +
+    │   ├── HashMap<K,V> (extends AbstractMap<K,V>, implements Map<K,V>) +
+    │   ├── LinkedHashMap<K,V> (extends HashMap<K,V>, implements Map<K,V>) +
+    │   └── TreeMap<K,V> (extends AbstractMap<K,V>, implements NavigableMap<K,V>) +
+    │       └── NavigableMap<K,V> (interface, extends SortedMap<K,V>) +
+    │           └── TreeMap<K,V> (implements NavigableMap<K,V>) +
+    ├── SortedSet<E> (interface, extends Set<E>) +
+    │   └── TreeSet<E> (implements SortedSet<E>) +
+    ├── SortedMap<K,V> (interface, extends Map<K,V>) +
+    │   └── TreeMap<K,V> (implements SortedMap<K,V>) +
+    ├── EnumSet<E> (abstract class, extends AbstractSet<E>, implements Serializable) +
+    ├── EnumMap<K,V> (abstract class, extends AbstractMap<K,V>, implements Serializable)
+    ├── IdentityHashMap<K,V> (extends AbstractMap<K,V>, implements Map<K,V>, Serializable)
+    └── WeakHashMap<K,V> (extends AbstractMap<K,V>, implements Map<K,V>)

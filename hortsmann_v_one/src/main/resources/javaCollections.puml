@@ -1,0 +1,116 @@
+@startuml
+interface "Iterable <T>" as Iterable
+interface "Collection <E>" as Collection
+
+interface "Set <E>" as Set
+class "HashSet <E>" as HashSet
+class "LinkedHashSet <E>" as LinkedHashSet
+class "TreeSet <E>" as TreeSet
+interface "List <E>" as List
+class "ArrayList <E>" as ArrayList
+class "LinkedList <E>" as LinkedList
+class "Vector <E>" as Vector
+class "Stack <E>" as Stack
+
+interface "SortedSet <E>" as SortedSet
+interface "NavigableSet <E>" as NavigableSet
+class "ConcurrentSkipListSet<E>" as ConcurrentSkipListSet
+
+interface "Queue <E>" as Queue
+class "PriorityQueue <E>" as PriorityQueue
+interface "Deque <E>" as Deque
+class "ArrayDeque <E>" as ArrayDeque
+
+interface "Map <K, V>" as Map
+class "HashMap <K, V>" as HashMap
+class "LinkedHashMap <K, V>" as LinkedHashMap
+class "TreeMap <K, V>" as TreeMap
+interface "NavigableMap <K, V>" as NavigableMap
+interface "SortedMap <K, V>" as SortedMap
+
+class "IdentityHashMap <K, V>" as IdentityHashMap
+class "WeakHashMap <K, V>" as WeakHashMap
+
+abstract class "EnumSet <E>" as EnumSet
+abstract class "EnumMap <K, V>" as EnumMap
+
+abstract class "AbstractCollection" as AbstractCollection
+abstract class "AbstractQueue" as AbstractQueue
+abstract class "AbstractList" as AbstractList
+abstract class "AbstractSequentialList" as AbstractSequentialList
+abstract class "AbstractSet" as AbstractSet
+abstract class "AbstractMap" as AbstractMap
+
+interface "RandomAccess" as RandomAccess
+
+Iterable <|-- Collection
+
+Collection <|-- Set
+Collection <|-- List
+Collection <|-- Queue
+
+AbstractCollection <|-- AbstractSet
+AbstractCollection <|-- ArrayDeque
+AbstractCollection <|-- AbstractList
+
+
+Set <|.. HashSet
+Set <|.. LinkedHashSet
+Set <|.. AbstractSet
+Set <|-- SortedSet
+
+HashSet <|-- LinkedHashSet
+
+AbstractSet <|-- TreeSet
+AbstractSet <|-- HashSet
+AbstractSet <|-- EnumSet
+AbstractSet <|-- ConcurrentSkipListSet
+
+NavigableSet <|.. TreeSet
+NavigableSet <|.. ConcurrentSkipListSet
+
+AbstractList <|-- ArrayList
+AbstractList <|-- Vector
+
+List <|.. AbstractList
+List <|.. ArrayList
+List <|.. LinkedList
+List <|.. Deque
+List <|.. Vector
+
+RandomAccess <|.. ArrayList
+RandomAccess <|.. Vector
+
+AbstractSequentialList <|-- LinkedList
+
+Vector <|-- Stack
+
+Queue <|.. AbstractQueue
+Queue <|.. LinkedList
+'Queue <|-- PriorityQueue
+Queue <|-- Deque
+
+AbstractQueue <|-- PriorityQueue
+
+Deque <|.. ArrayDeque
+Deque <|.. LinkedList
+
+Map <|.. HashMap
+Map <|.. LinkedHashMap
+Map <|-- SortedMap
+Map <|.. IdentityHashMap
+Map <|.. WeakHashMap
+
+HashMap <|-- LinkedHashMap
+
+AbstractMap <|-- TreeMap
+AbstractMap <|-- EnumMap
+AbstractMap <|-- IdentityHashMap
+AbstractMap <|-- WeakHashMap
+
+NavigableMap <|.. TreeMap
+
+SortedMap <|-- NavigableMap
+SortedSet <|..TreeSet
+
+@enduml
