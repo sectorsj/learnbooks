@@ -1,0 +1,17 @@
+@startuml
+title
+Рис. 4.2 Диаграмма классов
+end title
+
+class RushOrder
+class Order
+class Item
+class Account
+note "Счет для\nоплаты заказа" as n1
+
+Order <|-up- RushOrder
+Order o-down- Item
+Account <.left. Order
+n1 .. Account
+
+@enduml
