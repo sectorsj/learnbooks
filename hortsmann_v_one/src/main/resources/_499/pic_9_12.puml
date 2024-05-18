@@ -1,0 +1,27 @@
+@startuml
+title
+Рис. 9.12 Унаследованные контейнерные
+классы в каркасе коллекций
+end title
+
+interface "List" as list {}
+abstract class "AbstractList" as abstractList {}
+class "Vector" as vector {}
+class "RandomAccess" as randomAccess {}
+class "Stack" as stack {}
+
+interface "Map" as map {}
+class "Hashtable" as hashtable {}
+class "Properties" as properties {}
+
+list <|.. abstractList
+abstractList <|-- vector
+randomAccess <|-- vector
+vector <|-- stack
+
+map <|.. hashtable
+hashtable <|-- properties
+
+
+
+@enduml
