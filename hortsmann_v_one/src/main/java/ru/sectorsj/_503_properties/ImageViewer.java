@@ -4,10 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
@@ -33,7 +30,9 @@ class ImageViewerFrame extends JFrame {
     private JLabel label = new JLabel();
 
     public ImageViewerFrame() {
-        String userDir = System.getProperty("user.home");   // TODO у меня другая директория, надо заменить
+
+        // String userDir = System.getProperty("user.home");
+        String userDir = "hortsmann_v_one\\src\\main\\resources\\_503";
         var propertiesDir = new File(userDir, ".corejava");
         if (!propertiesDir.exists()){
             propertiesDir.mkdir();
