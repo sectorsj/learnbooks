@@ -65,3 +65,4 @@ build/
 
 ### My secrets ###
 secrets/
+*.properties
