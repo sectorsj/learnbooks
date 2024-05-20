@@ -18,6 +18,7 @@
         <module>javamaster</module>
         <module>hortsmann_v_one</module>
         <module>vasilyev/javaForBeginners</module>
+        <module>hortsmann_v_two</module>
     </modules>
     <dependencies>
         <dependency>
