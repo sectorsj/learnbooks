@@ -28,10 +28,14 @@ public class TestDB {
         try (Connection conn = getConnection();
              Statement stat = conn.createStatement()) {
             stat.executeUpdate("CREATE TABLE Greetings (Message CHAR(20))");
-            stat.executeUpdate("INSERT INTO Greetings VALUES ('Hello, World!'), ('Привет, Мир!'), ('Bonjour, Monde!')");
+            stat.executeUpdate("INSERT INTO Greetings VALUES ('Hello, World!')");
+            stat.executeUpdate("INSERT INTO Greetings VALUES ('Привет, Мир!')");
+            stat.executeUpdate("INSERT INTO Greetings VALUES ('Bonjour, Monde!')");
 
             try (ResultSet result = stat.executeQuery("SELECT * FROM Greetings")) {
-                while (result.next()) {
+
+                // if (result.next()) { // для анализа одного значения SQL запроса
+                while (result.next()) { // для анализа нескольких значений SQL запроса
                     System.out.println(result.getString(1));
                 }
             }
