@@ -1,0 +1,28 @@
+@startwbs
+title
+5.5 Типы исключений SQL
+end title
+
+* SQLException
+** BatchUpdateException
+** SerialException
+** SQLTransientException
+*** SQLTimeoutException
+*** SQLTransientConnectionException
+*** SQLTransactionRollbackException
+** SQLClientInfoException
+** SQLRecoverableException
+** SQLWarning
+** SQLNonTransientException
+*** SQLDataException
+*** SQLFeatureNotSupportedException
+*** SQLIntegrityConstraintViolationException
+*** SQLSyntaxErrorException
+*** SQLInvalidAuthorizationSpecException
+*** SQLNonTransientConnectionException
+** RowSetWarning
+** SyncFactoryException
+** SyncProviderException
+
+
+@endwbs
