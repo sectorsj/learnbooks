@@ -1328,3 +1328,1083 @@ https://horstmann.com/corejava/index.html
 // Если усечение данных произошло при выполнении команды обновления,
 // то объект типа DataTruncation генерируется в виде исключения.
 
+
+// page 309
+// 5.4.4 Заполнение базы данных (Populating a Database)
+
+// Попробуем теперь написать первую реальную программу,
+// используя прикладной интерфейс JDBC.
+// Будет хорошо, если в этой программе
+// можно выполнить некоторые из рассмотренных ныше запросов.
+// Это невозможно, т.к. база данных пуста.
+
+// Сначала ее нужно заполнить данными.
+// Сделать это нетрудно с помощью ряда инструкций SQL
+// для создания таблиц и ввода в них данных.
+
+// Большинство СУБД способны обрабатывать инструкции SQL из текстового файла,
+// но в этом случае проявляются досадные отличия в завершающих символах операторов
+// и другие синтаксические особенности реализации SQL на разных платформах.
+
+// -> воспользуемся прикладным интерфейсом JDBC,
+// чтобы написать простую программу для построчного чтения инструкций SQL
+// из файла и последующего их выполнения.
+
+// Данная программа должна читать данные из текстового файла в следующем формате:
+    CREATE TABLE Publishers (Publisher_id CHAR(6), Name CHAR (30), URL CHAR(80));
+    INSERT INTO Publishers VALUES ('0201', 'Addison-Wesley', 'www.aw-bc.com);
+    INSERT INTO Publishers VALUES ('0471', 'John Wiley & Sons', 'www.wiley.com);
+    ...
+
+// В листинге 5.2 ()
+// приведен исходный код программы ExecSQL,
+// сначала читающей операторы SQL из текстового файла,
+// а затем выполняющей их.
+
+// Для применения этой программы совсем не обязательно разбираться в ее исходном коде.
+
+// Самое главное, что она позволяет заполнить базу данных и выполнить примеры программ,
+// приведенные в остальной части этой главы.
+
+// 1. Приведите сервер базы данных в рабочее состояние
+// 2. Запустите программу ExecSQL на выполнение
+// 3. Введите следующие команды:
+        command: java -classpath путь_к_драйввру:. exec.ExecSQL Books.sql
+        command: java -classpath путь_к_драйверу:. exec.ExecSQL Authors.sql
+        command: java -classpath путь_к_драйввру:. exec.ExecSQL Publishers.sql
+        command: java -classpath путь_к_драйввру:. exec.ExecSQL BooksAuthors.sql
+
+// Перед запуском данной программы проверьте содержимое файла свойств:
+// - database.properties
+// на соответствие исполняющей среде (раздел 5.3.5) ()
+
+// В состав вашей базы данных может входить утилита для непосредственного чтения файлов SQL.
+
+// В базе данных Dеrbу можно выполнить следующую команду:
+        command: java -jar derby/liЬ/derbyrun.jar ij -р ij.properties Books.sql
+
+// для чтения файла свойств ij.properties, описанного ранее в разделе 5.3.3 (стр 297)
+
+// В формате данных для программы ExecSQL
+// допускается вставка точки с запятой в конце каждой строки,
+// поскольку такой формат предполагается в большинстве утилит баз данных.
+
+// Основные этапы выполнения программы ExecSQL.
+// 1. Устанавливается соединение с базой данных.
+//    Метод getConnection():
+      - считывает содержимое файла свойств database.properties
+//    - вводит свойство jdbc.drivers в список системных свойств.
+//    Диспетчер драйверов использует свойство jdbc.drivers для загрузки соответствующего драйвера базы данных.
+//    Для подключения к базе данных в методе getConnection() применяются свойства:
+//    - jdbc.url
+//    - jdbc.username
+//    - jdbc.password
+
+// 2. Открывается текстовый файл с операторами SQL.
+//    Если такой файл отсутствует, пользователю предлагается ввести операторы вручную с консоли.
+
+// 3. Все заданные операторы SQL выполняются с помощью универсального метода execute().
+//    При получении результирующего набора этот метод возвращает логическое значение true.
+//    В конце всех четырех текстовых файлов с операторами SQL содержится оператор SELECT *.
+//    Это дает возможность убедиться, что информация успешно введена в базу данных.
+
+// 4. При наличии результирующего набора полученные результаты выводятся на экран.
+//    Поскольку это обобщенный результирующий набор,
+//    то для определения количества столбцов в нем потребуются метаданные.
+//    Подробно метаданные рассматриваются далее (раздел 5.8).
+
+// 5. Если при выполнении операторов SQL возникает какое-нибудь исключение,
+//    то выводятся сведения о нем, а также обо всех остальных исключениях,
+//    которые могут следовать по цепочке.
+
+// 6. По завершении всех заданных операторов SQL
+//    соединение с базой данных разрывается.
+
+hortsmann_v_two/src/main/resources/_310/Books.sql
+// D:\filesEvgeniy\projects\mycoding\java\learnbooks\hortsmann_v_two\src\main\resources\_310\Authors.sql
+// D:\filesEvgeniy\projects\mycoding\java\learnbooks\hortsmann_v_two\src\main\resources\_310\Books.sql
+// D:\filesEvgeniy\projects\mycoding\java\learnbooks\hortsmann_v_two\src\main\resources\_310\BooksAuthors.sql
+// D:\filesEvgeniy\projects\mycoding\java\learnbooks\hortsmann_v_two\src\main\resources\_310\Publishers.sql
+
+
+// Дополнительно разбираю с тему ИИ:
+
+// Код класса: ExecSQL.java
+    class ExecSQL {
+       public static void main(String args[]) throws IOException {
+          try (Scanner in = args.length == 0 ? new Scanner(System.in)
+                : new Scanner(Path.of(args[0]), StandardCharsets.UTF_8)) {
+             try (Connection conn = getConnection();
+                   Statement stat = conn.createStatement()) {
+                while (true) {
+                   if (args.length == 0)
+                      System.out.println("Enter command or EXIT to exit:");
+
+                   if (!in.hasNextLine())
+                      return;
+
+                   String line = in.nextLine().strip();
+                   if (line.equalsIgnoreCase("EXIT"))
+                      return;
+                   if (line.endsWith(";")) // remove trailing semicolon
+                      line = line.substring(0, line.length() - 1);
+                   try {
+                      boolean isResult = stat.execute(line);
+                      if (isResult) {
+                         try (ResultSet rs = stat.getResultSet()) {
+                            showResultSet(rs);
+                         }
+                      } else {
+                         int updateCount = stat.getUpdateCount();
+                         System.out.println(updateCount + " rows updated");
+                      }
+                   } catch (SQLException e) {
+                      for (Throwable t : e)
+                         t.printStackTrace();
+                   }
+                }
+             }
+          } catch (SQLException e) {
+             for (Throwable t : e)
+                t.printStackTrace();
+          }
+       }
+
+       public static Connection getConnection() throws SQLException, IOException {
+          var props = new Properties();
+          try (Reader in = Files.newBufferedReader(
+                Path.of("database.properties"), StandardCharsets.UTF_8)) {
+             props.load(in);
+          }
+          String drivers = props.getProperty("jdbc.drivers");
+          if (drivers != null)
+             System.setProperty("jdbc.drivers", drivers);
+
+          String url = props.getProperty("jdbc.url");
+          String username = props.getProperty("jdbc.username");
+          String password = props.getProperty("jdbc.password");
+
+          return DriverManager.getConnection(url, username, password);
+       }
+
+       public static void showResultSet(ResultSet result) throws SQLException {
+          ResultSetMetaData metaData = result.getMetaData();
+          int columnCount = metaData.getColumnCount();
+
+          for (int i = 1; i <= columnCount; i++) {
+             if (i > 1)
+                System.out.print(", ");
+             System.out.print(metaData.getColumnLabel(i));
+          }
+          System.out.println();
+
+          while (result.next()) {
+             for (int i = 1; i <= columnCount; i++) {
+                if (i > 1)
+                   System.out.print(", ");
+                System.out.print(result.getString(i));
+             }
+             System.out.println();
+          }
+       }
+    }
+
+// В приведенном фрагменте кода есть несколько моментов, которые можно улучшить или изменить:
+
+// 1. Обработка аргументов командной строки:
+//  - В данном коде предполагается, что если аргументы командной строки отсутствуют (`args.length == 0`),
+//    то ввод будет осуществляться с консоли (`System.in`).
+//  - Если аргументы командной строки присутствуют, то предполагается,
+//    что первый аргумент (`args[0]`) содержит путь к файлу, из которого будет осуществляться ввод.
+//  - Однако в этом случае не предусмотрена обработка ситуации,
+//    когда указанный файл не существует или не может быть открыт, что может привести к исключению `IOException`.
+
+// 2. Обработка пустых строк:
+//    - В коде выполняется проверка наличия следующей строки с помощью `if (!in.hasNextLine())`,
+//      но не проверяется, является ли введенная строка пустой.
+//    - Если пользователь введет пустую строку, она будет обрабатываться как обычная команда SQL,
+//      что может привести к ошибке или неожиданному поведению.
+
+// 3. Обработка точки с запятой в конце команды:
+//    - Выполняется проверка, заканчивается ли введенная строка на точку с запятой (`;`),
+//      если да, то точка с запятой удаляется.
+//    - Если пользователь случайно введет несколько точек с запятой
+//      или другие символы после точки с запятой, они не будут удалены,
+//      что может привести к ошибке при выполнении команды SQL.
+
+// 4. Обработка исключений:
+//    - Перехватываются исключения `SQLException` и выводится информация о них с помощью `printStackTrace()`.
+//    - В некоторых случаях может быть полезно
+//      предоставить более дружественные сообщения об ошибках для пользователя,
+//      чтобы он мог понять, что пошло не так и как исправить проблему.
+//
+// Несмотря на эти замечания, код в целом функционален
+// и выполняет свою основную задачу - обработку команд SQL, введенных пользователем,
+// и выполнение их с помощью объекта `Statement`.
+
+// Ошибки, которые могут возникнуть, связаны с некорректными входными данными
+// или проблемами с подключением к базе данных, и они обрабатываются с помощью перехвата исключений.
+
+
+// Задача:
+// Программа ExecSQL столкнулась с множеством синтаксических ошибок
+// при выполнении SQL-операторов из указанных файлов скриптов.
+// Основная проблема заключается в том, что операторы SQL в файлах скриптов
+// разделены на отдельные строки,
+// но программа ExecSQL пытается выполнить каждую строку как отдельный оператор SQL.
+
+// Чтобы решить эту проблему, вам нужно изменить способ чтения
+// и выполнения SQL-операторов в программе ExecSQL.
+
+// Вместо чтения каждой строки отдельно, вам нужно читать весь файл скрипта целиком,
+// а затем разделять его содержимое на отдельные операторы SQL,
+// используя точку с запятой (;) в качестве разделителя.
+
+// Вот как вы можете изменить код в методе main класса ExecSQL:
+class ExecSQLv1 {
+    public static void main(String[] args) throws IOException {
+        try (Connection conn = getConnection();
+             Statement stat = conn.createStatement()) {
+            for (String filePath : args) {
+                String content = Files.readString(Path.of(filePath));
+                String[] statements = content.split(";");
+                for (String sql : statements) {
+                    sql = sql.trim();
+                    if (!sql.isEmpty()) {
+                        try {
+                            boolean isResult = stat.execute(sql);
+                            if (isResult) {
+                                try (ResultSet rs = stat.getResultSet()) {
+                                    showResultSet(rs);
+                                }
+                            } else {
+                                int updateCount = stat.getUpdateCount();
+                                System.out.println(updateCount + " rows updated");
+                            }
+                        } catch (SQLException e) {
+                            for (Throwable t : e) {
+                                t.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+    }
+
+    public static Connection getConnection() throws SQLException, IOException {
+       var props = new Properties();
+       try (Reader in = Files.newBufferedReader(
+             Path.of("database.properties"), StandardCharsets.UTF_8)) {
+          props.load(in);
+       }
+       String drivers = props.getProperty("jdbc.drivers");
+       if (drivers != null)
+          System.setProperty("jdbc.drivers", drivers);
+       String url = props.getProperty("jdbc.url");
+       String username = props.getProperty("jdbc.username");
+       String password = props.getProperty("jdbc.password");
+       return DriverManager.getConnection(url, username, password);
+    }
+
+    public static void showResultSet(ResultSet result) throws SQLException {
+       ResultSetMetaData metaData = result.getMetaData();
+       int columnCount = metaData.getColumnCount();
+       for (int i = 1; i <= columnCount; i++) {
+          if (i > 1)
+             System.out.print(", ");
+          System.out.print(metaData.getColumnLabel(i));
+       }
+       System.out.println();
+       while (result.next()) {
+          for (int i = 1; i <= columnCount; i++) {
+             if (i > 1)
+                System.out.print(", ");
+             System.out.print(result.getString(i));
+          }
+          System.out.println();
+       }
+    }
+}
+
+// Основные изменения:
+// Вместо использования Scanner для чтения файла построчно, используем Files.readString()
+// для чтения всего содержимого файла скрипта в виде строки.
+
+// Разделяем содержимое файла на отдельные операторы SQL, используя split(";").
+// Это создает массив строк, каждая из которых представляет отдельный оператор SQL.
+
+// Затем проходимся по каждому оператору SQL в цикле for,
+// удаляем лишние пробелы с помощью trim() и проверяем, что оператор не пустой.
+
+// Выполняем каждый оператор SQL с помощью stat.execute(sql), как и раньше,
+// и обрабатываем результаты и исключения так же, как в исходном коде.
+
+// -> программа ExecSQLv1 должна правильно читать файлы скриптов,
+// разделять их содержимое на отдельные операторы SQL и выполнять их по очереди.
+
+
+// Фрагмент исходного кода ExecSQLv1.java
+    public static void main(String[] args) throws IOException {
+        try (Connection conn = getConnection();
+             Statement stat = conn.createStatement()) {
+
+            for (String filePath : args) {
+                String content = Files.readString(Path.of(filePath));
+                String[] statements = content.split(";");
+
+                for (String sql : statements) {
+                    sql = sql.trim();
+                    if (!sql.isEmpty()) {
+                        try {
+                            boolean isResult = stat.execute(sql);
+                            if (isResult) {
+                                try (ResultSet rs = stat.getResultSet()) {
+                                    showResultSet(rs);
+                                }
+                            } else {
+                                int updateCount = stat.getUpdateCount();
+                                System.out.println(updateCount + " rows updated");
+                            }
+                        } catch (SQLException e) {
+                            for (Throwable t : e) {
+                                t.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+    }
+
+// Задача:
+// Сделать из этих фрагментов кода один, так чтобы можно было вводить данные в таблицы через строку
+// и если написать команду "LOAD FILES" можно загрузить данные в таблицу из файлов
+    public static void main(String[] args) throws IOException {
+        try (Connection conn = getConnection();
+             Statement stat = conn.createStatement();
+             Scanner in = new Scanner(System.in)) {
+
+            while (true) {
+                System.out.println("Enter command, LOAD FILES to load data from files, or EXIT to exit:");
+                if (!in.hasNextLine()) {
+                    return;
+                }
+                String line = in.nextLine().trim();
+                if (line.equalsIgnoreCase("EXIT")) {
+                    return;
+                }
+                if (line.equalsIgnoreCase("LOAD FILES")) {
+                    if (args.length == 0) {
+                        System.out.println("No file paths provided as command-line arguments.");
+                        continue;
+                    }
+                    for (String filePath : args) {
+                        String content = Files.readString(Path.of(filePath));
+                        String[] statements = content.split(";");
+                        for (String sql : statements) {
+                            sql = sql.trim();
+                            if (!sql.isEmpty()) {
+                                executeStatement(stat, sql);
+                            }
+                        }
+                    }
+                } else {
+                    if (line.endsWith(";")) {
+                        line = line.substring(0, line.length() - 1);
+                    }
+                    executeStatement(stat, line);
+                }
+            }
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+    }
+
+    private static void executeStatement(Statement stat, String sql) throws SQLException {
+        try {
+            boolean isResult = stat.execute(sql);
+            if (isResult) {
+                try (ResultSet rs = stat.getResultSet()) {
+                    showResultSet(rs);
+                }
+            } else {
+                int updateCount = stat.getUpdateCount();
+                System.out.println(updateCount + " rows updated");
+            }
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+    }
+
+// Основные изменения:
+// Снова используем Scanner для чтения ввода пользователя из консоли.
+
+// В бесконечном цикле while (true) запрашиваем у пользователя ввод команды,
+// файлов для загрузки данных или выход из программы.
+
+// Если пользователь вводит "EXIT", программа завершается.
+
+// Если пользователь вводит "LOAD FILES", программа проверяет,
+// были ли указаны пути к файлам в аргументах командной строки.
+
+    // Если файлы не указаны, выводится сообщение об ошибке и цикл продолжается.
+    // В противном случае, программа читает содержимое каждого файла,
+    // разделяет его на отдельные операторы SQL и выполняет каждый оператор,
+    // используя метод executeStatement().
+
+// Если пользователь вводит обычную команду SQL,
+// программа удаляет точку с запятой в конце строки (если она есть)
+// и выполняет команду, используя метод executeStatement().
+
+// Метод executeStatement() выполняет оператор SQL,
+// обрабатывает результаты и исключения, как и раньше.
+
+// Можно запустить программу без указания файлов в аргументах командной строки.
+// Вводить команды SQL непосредственно в консоль.
+// Если нужно загрузить данные из файлов,
+// можно ввести команду "LOAD FILES", и программа выполнит операторы SQL из указанных файлов.
+
+// Задача:
+// Когда программа не находит пути в аргументах,
+// должно выводиться сообщение о ручном вводе путей к файлам скриптов,
+// вместо выведения сообщения об ошибке.
+// Если пути указаны не верно, тогда программа должна выводить предупреждение.
+
+    public static void main(String[] args) throws IOException {
+        try (Connection conn = getConnection();
+             Statement stat = conn.createStatement();
+             Scanner in = new Scanner(System.in)) {
+
+            while (true) {
+                System.out.println("Enter command, LOAD FILES to load data from files, or EXIT to exit:");
+                if (!in.hasNextLine()) {
+                    return;
+                }
+                String line = in.nextLine().trim();
+                if (line.equalsIgnoreCase("EXIT")) {
+                    return;
+                }
+                if (line.equalsIgnoreCase("LOAD FILES")) {
+                    if (args.length == 0) {
+                        System.out.println("No file paths provided as command-line arguments.");
+                        System.out.println("Please enter the paths to the script files (separated by commas):");
+                        String filePaths = in.nextLine().trim();
+                        args = filePaths.split(",");
+                    }
+                    for (String filePath : args) {
+                        try {
+                            String content = Files.readString(Path.of(filePath.trim()));
+                            String[] statements = content.split(";");
+                            for (String sql : statements) {
+                                sql = sql.trim();
+                                if (!sql.isEmpty()) {
+                                    executeStatement(stat, sql);
+                                }
+                            }
+                        } catch (IOException e) {
+                            System.out.println("Warning: File not found or invalid path - " + filePath.trim());
+                        }
+                    }
+                } else {
+                    if (line.endsWith(";")) {
+                        line = line.substring(0, line.length() - 1);
+                    }
+                    executeStatement(stat, line);
+                }
+            }
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+    }
+
+    private static void executeStatement(Statement stat, String sql) throws SQLException {
+        try {
+            boolean isResult = stat.execute(sql);
+            if (isResult) {
+                try (ResultSet rs = stat.getResultSet()) {
+                    showResultSet(rs);
+                }
+            } else {
+                int updateCount = stat.getUpdateCount();
+                System.out.println(updateCount + " rows updated");
+            }
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+    }
+// Изменения:
+// Если пользователь вводит "LOAD FILES", но пути к файлам не были указаны в аргументах командной строки,
+// программа выводит сообщение о том, что пути не были указаны,
+// и запрашивает у пользователя ручной ввод путей к файлам скриптов.
+// Пользователь может ввести несколько путей, разделенных запятыми.
+
+// Программа разделяет введенные пользователем пути по запятым и сохраняет их в массиве args.
+
+// При чтении каждого файла программа обрабатывает исключение IOException, которое может возникнуть,
+// если файл не найден или указан неверный путь.
+// В таком случае программа выводит предупреждение с указанием проблемного файла
+// и продолжает обработку остальных файлов.
+
+// Далее код остается без изменений.
+
+// Теперь если пользователь вводит "LOAD FILES",
+// но пути к файлам не были указаны в аргументах командной строки,
+// программа запросит у пользователя ручной ввод путей.
+// Если какой-либо из указанных путей неверен или файл не найден,
+// программа выведет предупреждение и продолжит обработку остальных файлов.
+
+// Вопрос:
+// Каким образом можно вводить название путей к файлам скриптов?
+
+// Когда программа запрашивает у пользователя ручной ввод путей к файлам скриптов,
+// пользователь должен ввести полные или относительные пути
+// к каждому файлу, разделенные запятыми.
+
+// Примеры:
+// 1. Если файлы скриптов находятся в той же директории, что и программа:
+    Authors.sql, Books.sql, BooksAuthors.sql, Publishers.sql
+
+// 2. Если файлы скриптов находятся в другой директории,
+// 2.1 Можно указать относительные пути:
+    scripts/Authors.sql, scripts/Books.sql, scripts/BooksAuthors.sql, scripts/Publishers.sql
+
+// 2.2 Можно также указать полные пути к файлам:
+    C:\path\to\scripts\Authors.sql, C:\path\to\scripts\Books.sql,
+    C:\path\to\scripts\BooksAuthors.sql, C:\path\to\scripts\Publishers.sql
+
+// 3. Для Unix-подобных систем (Linux, macOS):
+/path/to/scripts/Authors.sql, /path/to/scripts/Books.sql,
+/path/to/scripts/BooksAuthors.sql, /path/to/scripts/Publishers.sql
+
+// Внимание:
+// Пути к файлам должны быть разделены запятыми без дополнительных пробелов.
+
+// Если путь содержит пробелы, его нужно заключить в двойные кавычки,
+// Пример:
+"C:\path with spaces\script.sql"
+
+// Нужно убедитесь, что указанные пути и имена файлов
+// являются правильными и соответствуют фактическому расположению файлов скриптов на вашем компьютере.
+
+// Пример ввода путей при запросе программы:
+// Введите пути к файлам скриптов (через запятую и пробел):
+    path/to/scripts/Authors.sql, path/to/scripts/Books.sql,
+    path/to/scripts/BooksAuthors.sql, path/to/scripts/Publishers.sql
+
+// Программа разделяет введенную строку по запятым и будет обрабатывать каждый путь отдельно,
+// выполняя операторы SQL из соответствующих файлов скриптов.
+
+    public static void main(String[] args) throws IOException {
+        // Открытие соединения с базой данных, создание объекта Statement и Scanner для чтения ввода пользователя
+        try (Connection conn = getConnection();
+             Statement stat = conn.createStatement();
+             Scanner in = new Scanner(System.in)) {
+
+            // Бесконечный цикл для обработки команд пользователя
+            while (true) {
+                // Вывод приглашения для ввода команды
+                System.out.println("Enter command, LOAD FILES to load data from files, or EXIT to exit:");
+
+                // Проверка наличия следующей строки ввода
+                if (!in.hasNextLine()) {
+                    // Если нет следующей строки, выход из программы
+                    return;
+                }
+
+                // Чтение следующей строки ввода и удаление лишних пробелов
+                String line = in.nextLine().trim();
+
+                // Проверка, если введена команда "EXIT"
+                if (line.equalsIgnoreCase("EXIT")) {
+                    // Выход из программы
+                    return;
+                }
+
+                // Проверка, если введена команда "LOAD FILES"
+                if (line.equalsIgnoreCase("LOAD FILES")) {
+                    // Проверка, если пути к файлам не были указаны в аргументах командной строки
+                    if (args.length == 0) {
+                        // Вывод сообщения о том, что пути к файлам не были указаны
+                        System.out.println("No file paths provided as command-line arguments.");
+                        // Запрос у пользователя ручного ввода путей к файлам скриптов
+                        System.out.println("Please enter the paths to the script files (separated by commas):");
+                        // Чтение введенных путей и удаление лишних пробелов
+                        String filePaths = in.nextLine().trim();
+                        // Разделение введенных путей по запятым и сохранение их в массиве args
+                        args = filePaths.split(",");
+                    }
+
+                    // Цикл по каждому пути к файлу скрипта
+                    for (String filePath : args) {
+                        try {
+                            // Чтение содержимого файла скрипта
+                            String content = Files.readString(Path.of(filePath.trim()));
+                            // Разделение содержимого файла на отдельные операторы SQL
+                            String[] statements = content.split(";");
+
+                            // Цикл по каждому оператору SQL
+                            for (String sql : statements) {
+                                // Удаление лишних пробелов из оператора SQL
+                                sql = sql.trim();
+                                // Проверка, если оператор SQL не пустой
+                                if (!sql.isEmpty()) {
+                                    // Выполнение оператора SQL с помощью метода executeStatement
+                                    executeStatement(stat, sql);
+                                }
+                            }
+                        } catch (IOException e) {
+                            // Обработка исключения, если файл не найден или указан неверный путь
+                            System.out.println("Warning: File not found or invalid path - " + filePath.trim());
+                        }
+                    }
+                } else {
+                    // Если введена обычная команда SQL
+                    // Проверка, если команда заканчивается на ";"
+                    if (line.endsWith(";")) {
+                        // Удаление ";" из конца команды
+                        line = line.substring(0, line.length() - 1);
+                    }
+                    // Выполнение команды SQL с помощью метода executeStatement
+                    executeStatement(stat, line);
+                }
+            }
+        } catch (SQLException e) {
+            // Обработка исключения SQLException
+            for (Throwable t : e) {
+                // Вывод информации об исключении и трассировки стека
+                t.printStackTrace();
+            }
+        }
+    }
+
+    private static void executeStatement(Statement stat, String sql) throws SQLException {
+        try {
+            // Выполнение оператора SQL и получение флага, указывающего, есть ли результат
+            boolean isResult = stat.execute(sql);
+
+            if (isResult) {
+                // Если есть результат, получение ResultSet
+                try (ResultSet rs = stat.getResultSet()) {
+                    // Отображение содержимого ResultSet с помощью метода showResultSet
+                    showResultSet(rs);
+                }
+            } else {
+                // Если нет результата, получение количества обновленных строк
+                int updateCount = stat.getUpdateCount();
+                // Вывод количества обновленных строк
+                System.out.println(updateCount + " rows updated");
+            }
+        } catch (SQLException e) {
+            // Обработка исключения SQLException
+            for (Throwable t : e) {
+                // Вывод информации об исключении и трассировки стека
+                t.printStackTrace();
+            }
+        }
+    }
+
+
+
+// Возникает проблема из-за некорректных путей к файлам SQL-скриптов.
+// Когда вводишь пути, содержащие обратный слеш "\\",
+// база данных воспринимает это как спецсимвол и выдает ошибку синтаксиса.
+
+// Чтобы исправить эту проблему, попробуйте следующее:
+
+// 1. Используйте прямой слеш "/" вместо обратного слеша "\\" в путях к файлам. Например:
+        hortsmann_v_two/src/main/resources/_310/Books.sql
+//    вместо
+        hortsmann_v_two\src\main\resources\_310\Books.sql
+
+// 2. Если нужно сохранить обратные слеши в путях, то нужно удвоить каждый обратный слеш,
+//    чтобы база данных воспринимала его как обычный символ. Например:
+        hortsmann_v_two\\src\\main\\resources\\_310\\Books.sql
+
+// 3. Убедиться, что файлы SQL-скриптов действительно существуют по указанным путям
+      и имеют правильные имена файлов.
+
+// 4. Попробовать ввести полные абсолютные пути к файлам, начиная с корневого каталога, например:
+        D:/filesEvgeniy/projects/mycoding/java/learnbooks/hortsmann_v_two/src/main/resources/_310/Books.sql
+
+// Применив одно из этих решений, повторно выполнить команду "LOAD FILES"
+// и ввести исправленные пути к файлам SQL-скриптов.
+
+// Если ошибки сохраняются, то возможно проблема в самих файлах SQL-скриптов.
+// Нужно убедитесь, что файлы содержат корректные SQL-запросы и не имеют синтаксических ошибок.
+
+
+// Если прямой слеш не помогает и программа все равно пытается выполнить SQL-код вместо загрузки файлов,
+то попробуем следующее:
+
+// 1. Проверить содержимое файлов SQL-скриптов:
+//    (`Books.sql`, `BooksAuthors.sql`, `Publishers.sql`).
+//    Убедитеся, что они содержат только валидные SQL-запросы и не имеют синтаксических ошибок.
+//    Если в файлах есть некорректный SQL-код, то это может приводить к ошибкам при попытке их выполнения.
+
+// 2. Изменить логику программы, чтобы она явно различала команду "LOAD FILES" и обычные SQL-запросы.
+//    Можно добавить проверку на точное совпадение с "LOAD FILES" (с учетом регистра)
+//    и обрабатывать эту команду отдельно от остальных запросов.
+
+// 3. При обработке команды "LOAD FILES" попробуйте считывать пути к файлам
+//    из отдельной переменной, а не из общей строки ввода.
+//    Это позволит избежать интерпретации путей как SQL-кода.
+
+Пример изменений в коде:
+if (line.equals("LOAD FILES")) {
+    System.out.println("Enter the paths to the script files (separated by commas):");
+    String filePaths = in.nextLine().trim();
+    String[] paths = filePaths.split(",");
+    for (String path : paths) {
+        path = path.trim();
+        try {
+            String content = Files.readString(Path.of(path));
+            String[] statements = content.split(";");
+            for (String sql : statements) {
+                sql = sql.trim();
+                if (!sql.isEmpty()) {
+                    executeStatement(stat, sql);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Warning: File not found or invalid path - " + path);
+        }
+    }
+} else {
+    // Обработка обычных SQL-запросов
+    if (line.endsWith(";")) {
+        line = line.substring(0, line.length() - 1);
+    }
+    executeStatement(stat, line);
+}
+
+// В примере мы явно проверяем, что введенная команда равна "LOAD FILES",
+// если это так, то запрашиваем у пользователя пути к файлам в отдельной строке.
+// Затем мы разделяем введенные пути по запятым и обрабатываем каждый файл отдельно.
+
+// Если ни одно из предложенных решений не помогает,
+// возможно проблема кроется в самой логике программы или в настройках базы данных.
+// В таком случае, потребуется более детальное изучение кода и конфигурации окружения.
+
+// Можно попробовать отладить работу программы, и посмотреть,
+// как именно обрабатываются введенные команды и пути к файлам.
+// Это поможет выявить конкретное место, где возникает проблема.
+
+
+// В скрипте Books.sql скрипты написаны в одну строку без переноса:
+    CREATE TABLE Books (Title CHAR(60), ISBN CHAR(13), Publisher_Id CHAR(6), Price DECIMAL(10,2));
+    INSERT INTO Books VALUES ('A Guide to the SQL Standard', '0-201-96426-0', '0201', 47.95);
+
+
+//  Authors.sql во первых есть переносы:
+    CREATE TABLE Authors
+    (
+    	Author_Id CHAR(4),
+    	Name CHAR(25),
+    	Fname CHAR(25)
+    );
+
+// Оператор INSERT INTO указан всего один раз и дальше значения перечисляются через запятую.
+    INSERT INTO Authors VALUES
+    ('ALEX', 'Alexander', 'Christopher'),
+    ('BROO', 'Brooks', 'Frederick P.'),
+    ...
+    ('WEIS', 'Weise', 'Daniel');
+
+// В скрипте `Books.sql` каждый оператор `INSERT INTO` указан отдельно для каждой строки данных,
+// и все операторы написаны в одну строку без переносов.
+
+// В скрипте `Authors.sql` используются переносы строк для форматирования кода,
+// и оператор `INSERT INTO` указан только один раз, а значения перечисляются через запятую.
+
+// Оба формата являются допустимыми в SQL, но могут по-разному обрабатываться
+// в зависимости от настроек и особенностей используемой базы данных и инструментов.
+
+// Чтобы исключить влияние форматирования на обработку скриптов,
+// можно привести скрипт `Authors.sql` к формату, аналогичному скрипту `Books.sql`:
+
+// Изменить скрипт `Authors.sql`, чтобы каждый оператор `INSERT INTO`
+// был указан отдельно для каждой строки данных, и убрать переносы строк.
+
+// sql код:
+    CREATE TABLE Authors (Author_Id CHAR(4), Name CHAR(25), Fname CHAR(25));
+    INSERT INTO Authors VALUES ('ALEX', 'Alexander', 'Christopher');
+    INSERT INTO Authors VALUES ('BROO', 'Brooks', 'Frederick P.');
+    -- ...
+    INSERT INTO Authors VALUES ('WEIS', 'Weise', 'Daniel');
+    SELECT * FROM Authors;
+
+Если lанные не сохраняются в таблице `Authors`,
+// то проблема может быть не связана с форматированием скрипта.
+// В этом случае стоит проверить другие возможные причины, такие как:
+
+// 1. Наличие ошибок в скрипте `Authors.sql` (опечатки, некорректные данные и т.д.).
+// 2. Проблемы с правами доступа к базе данных или таблице `Authors`.
+// 3. Некорректная обработка скриптов в самой программе.
+
+
+
+
+// Вопрос:
+// Можно ли модифицировать программу, чтобы она корректно обрабатывала скрипты
+ с переносами строк и множественными значениями в одном операторе `INSERT INTO`?
+
+// Попытка корректной обрабатки скриптов с переносами строк
+// и множественными значениями в одном операторе `INSERT INTO`:
+    private static void executeScript(Statement stat, String script) throws SQLException {
+        String[] statements = script.split(";");
+        for (String sql : statements) {
+            sql = sql.trim();
+            if (!sql.isEmpty()) {
+                if (sql.toUpperCase().startsWith("INSERT INTO")) {
+                    executeInsertStatement(stat, sql);
+                } else {
+                    executeStatement(stat, sql);
+                }
+            }
+        }
+    }
+
+    private static void executeInsertStatement(Statement stat, String sql) throws SQLException {
+        String[] lines = sql.split("\\r?\\n");
+        StringBuilder sb = new StringBuilder();
+        for (String line : lines) {
+            line = line.trim();
+            if (!line.isEmpty()) {
+                if (line.endsWith(",")) {
+                    sb.append(line).append(" ");
+                } else {
+                    sb.append(line);
+                    executeStatement(stat, sb.toString());
+                    sb.setLength(0);
+                }
+            }
+        }
+    }
+
+// Добавлен новый метод `executeScript`, который разделяет скрипт
+// на отдельные операторы SQL по точке с запятой (`;`)
+// и обрабатывает каждый оператор отдельно.
+
+// Если оператор начинается с `INSERT INTO` (без учета регистра),
+// то он передается в метод `executeInsertStatement` для специальной обработки.
+//      Метод `executeInsertStatement` разделяет оператор `INSERT INTO`
+//      на отдельные строки по переносу строки (`\r?\n`).
+//      Затем он объединяет строки, заканчивающиеся запятой (`,`), в один оператор `INSERT INTO`
+//      и выполняет его с помощью метода `executeStatement`.
+
+
+
+// Пример использования:
+    String filePath = "path/to/Authors.sql";
+    try {
+        String content = Files.readString(Path.of(filePath));
+        executeScript(stat, content);
+    } catch (IOException e) {
+        System.out.println("Warning: File not found or invalid path - " + filePath);
+    }
+
+// Выполняется чтение содержимого файла скрипта `Authors.sql`
+// и выполняется передача его в метод `executeScript` для выполнения.
+
+// После внесения этих изменений в код, программа должна быть способна обрабатывать скрипты
+// с переносами строк и множественными значениями в одном операторе `INSERT INTO`.
+
+
+
+// Полный код класса `ExecSQL` с учетом изменений для обработки скриптов
+// с переносами строк и множественными значениями в одном операторе `INSERT INTO`:
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.*;
+import java.util.Scanner;
+
+public class ExecSQLv2 {
+    public static void main(String[] args) throws IOException {
+        try (Scanner in = args.length == 0
+                ? new Scanner(System.in)
+                : new Scanner(Path.of(args[0]))) {
+            try (Connection conn = getConnection();
+                 Statement stat = conn.createStatement()) {
+                while (true) {
+                    if (args.length == 0) {
+                        System.out.println("Enter command, LOAD FILES to load data from files, or EXIT to exit:");
+                    }
+                    if (!in.hasNextLine()) {
+                        return;
+                    }
+                    String line = in.nextLine().trim();
+                    if (line.equalsIgnoreCase("EXIT")) {
+                        return;
+                    }
+                    if (line.equalsIgnoreCase("LOAD FILES")) {
+                        System.out.println("Enter the paths to the script files (separated by commas):");
+                        String filePaths = in.nextLine().trim();
+                        String[] paths = filePaths.split(",");
+                        for (String path : paths) {
+                            path = path.trim();
+                            try {
+                                String content = Files.readString(Path.of(path));
+                                executeScript(stat, content);
+                            } catch (IOException e) {
+                                System.out.println("Warning: File not found or invalid path - " + path);
+                            }
+                        }
+                    } else {
+                        if (line.endsWith(";")) {
+                            line = line.substring(0, line.length() - 1);
+                        }
+                        executeStatement(stat, line);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+    }
+
+    private static Connection getConnection() throws SQLException {
+        String url = "jdbc:derby:booksdb";
+        return DriverManager.getConnection(url);
+    }
+
+    private static void executeScript(Statement stat, String script) throws SQLException {
+        String[] statements = script.split(";");
+        for (String sql : statements) {
+            sql = sql.trim();
+            if (!sql.isEmpty()) {
+                if (sql.toUpperCase().startsWith("INSERT INTO")) {
+                    executeInsertStatement(stat, sql);
+                } else {
+                    executeStatement(stat, sql);
+                }
+            }
+        }
+    }
+
+    private static void executeInsertStatement(Statement stat, String sql) throws SQLException {
+        String[] lines = sql.split("\\r?\\n");
+        StringBuilder sb = new StringBuilder();
+        for (String line : lines) {
+            line = line.trim();
+            if (!line.isEmpty()) {
+                if (line.endsWith(",")) {
+                    sb.append(line).append(" ");
+                } else {
+                    sb.append(line);
+                    executeStatement(stat, sb.toString());
+                    sb.setLength(0);
+                }
+            }
+        }
+    }
+
+    private static void executeStatement(Statement stat, String sql) throws SQLException {
+        try {
+            boolean isResult = stat.execute(sql);
+            if (isResult) {
+                try (ResultSet rs = stat.getResultSet()) {
+                    showResultSet(rs);
+                }
+            } else {
+                int updateCount = stat.getUpdateCount();
+                System.out.println(updateCount + " rows updated");
+            }
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+    }
+
+    private static void showResultSet(ResultSet result) throws SQLException {
+        ResultSetMetaData metaData = result.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+        for (int i = 1; i <= columnCount; i++) {
+            if (i > 1) {
+                System.out.print(", ");
+            }
+            System.out.print(metaData.getColumnLabel(i));
+        }
+        System.out.println();
+
+        while (result.next()) {
+            for (int i = 1; i <= columnCount; i++) {
+                if (i > 1) {
+                    System.out.print(", ");
+                }
+                System.out.print(result.getString(i));
+            }
+            System.out.println();
+        }
+    }
+}
+
+// Основные изменения:
+
+// 1. Добавлен метод `executeScript`, который разделяет скрипт
+//    на отдельные операторы SQL по точке с запятой (`;`)
+//    и обрабатывает каждый оператор отдельно.
+
+// 2. Добавлен метод `executeInsertStatement`, который обрабатывает операторы `INSERT INTO`
+//    с переносами строк и множественными значениями.
+//    Он разделяет оператор на отдельные строки, объединяет строки, заканчивающиеся запятой (`,`),
+//    в один оператор `INSERT INTO` и выполняет его.
+
+// 3. В методе `main` добавлена обработка команды `LOAD FILES`.
+//    При вводе этой команды программа запрашивает у пользователя
+//    пути к файлам скриптов, разделенные запятыми.
+//    Затем программа читает содержимое каждого файла
+//    и передает его в метод `executeScript` для выполнения.
+
+4. Остальной код класса остался без изменений.
+
+
+// Вопрос:
+// Откуда возникает Синтаксическая ошибка:
+//      Encountered "<EOF>" at line 1, column 23 :
+//      java.sql.SQLSyntaxErrorException: Синтаксическая ошибка: Encountered "<EOF>" at line 1, column 23.
+//      ...
+
+
+// Ошибка "Синтаксическая ошибка: Encountered "<EOF>" at line 1, column 23" возникает,
+// когда парсер SQL достигает конца файла (EOF - End of File) раньше, чем ожидалось,
+// то есть когда SQL-запрос не завершен корректно.
+
+// В данном случае, эта проблема возникает из-за наличия комментария в конце файла:
+
+// sql:
+    -- DELETE FROM Authors;
+
+// Когда парсер SQL читает файл и достигает этой строки, он ожидает,
+// что после комментария будет корректный SQL-запрос.
+// Поскольку комментарий является последней строкой в файле,
+// парсер встречает конец файла (EOF) вместо ожидаемого запроса, что и вызывает ошибку.
+
+// Чтобы исправить эту проблему, можно:
+// - либо удалить комментарий в конце файла
+// - либо добавить после комментария пустую строку
+// - либо добавить другой корректный SQL-запрос
+
+
