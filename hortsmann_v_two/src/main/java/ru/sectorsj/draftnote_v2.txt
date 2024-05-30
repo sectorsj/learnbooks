@@ -2407,4 +2407,40 @@ public class ExecSQLv2 {
 // - либо добавить после комментария пустую строку
 // - либо добавить другой корректный SQL-запрос
 
+// Итог
+// Что необходимо сделать чтобы выполнить подключение к данной БД:
+// 1. В терминале - перейти в директорию с файлом  "derbyrun.jar"
+//
+// Можно воспользоваться вариатом подключения к бд и внесения в нее данных
+// где не нужно запускать приложение ExecSQL.java
+// 2. Открываем новый терминал и ввести команду, которая запускает утилиту "ij":
+        command: java -jar .\derbyrun.jar ij -p .\ij.properties
+//    далее вводим по одному команды на ввод в бд:
+        command: run 'D:/filesEvgeniy/pr.../hortsmann_v_two/src/main/resources/_310/Books.sql';
+        command: run 'D:/filesEvgeniy/pr.../hortsmann_v_two/src/main/resources/_310/Authors.sql';
+        command: run 'D:/filesEvgeniy/pr.../hortsmann_v_two/src/main/resources/_310/BooksAuthors.sql';
+        command: run 'D:/filesEvgeniy/pr.../hortsmann_v_two/src/main/resources/_310/Publishers.sql';
 
+// Либо Запустить приложение "ExecSQL.java"
+// 3. Следовать инструкциям приложения
+// 4. Либо вводим команды SQL
+
+// 5. Либо пишем "LOAD FILES"
+// 6. Выполняем настройку запуска конфигурации ExecSQL.java
+//    Нажимаем "Edit configuration":
+//    В поле "Program arguments" указываем пути к файлам скриптов, разделенные пробелами:
+    D:\filesEvgeniy\pr...\hortsmann_v_two\src\main\resources\_310\Authors.sql
+    D:\filesEvgeniy\pr...\hortsmann_v_two\src\main\resources\_310\Books.sql
+    D:\filesEvgeniy\pr...\hortsmann_v_two\src\main\resources\_310\BooksAuthors.sql
+    D:\filesEvgeniy\pr...\hortsmann_v_two\src\main\resources\_310\Publishers.sql
+
+// 7. Либо после команды: "LOAD FILES"
+//    После появления строки: Введите пути к файлам скриптов (через запятую и пробел):
+//    Указываем относительные пути к файлам скриптов:
+        hortsmann_v_two/src/main/resources/_310/Authors.sql,
+        hortsmann_v_two/src/main/resources/_310/Books.sql,
+        hortsmann_v_two/src/main/resources/_310/BooksAuthors.sql,
+        hortsmann_v_two/src/main/resources/_310/Publishers.sql
+//    Пути пишуться в одну строку после запятой, без переносов на следующую строку и дополнительных пробелов
+
+// Выбираем для работы более удобный вариант
