@@ -1,15 +1,15 @@
 package ru.sectorsj._315_query;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
+import java.nio.file.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
+import java.util.*;
 
+/**
+ Демонстрация ряда сложных запросов в базу данных
+ @author Сау Horstmann
+
+ */
 public class QueryTest {
     private static final String allQuery = "SELECT BOOKS.Price, BOOKS.Title FROM BOOKS";
     private static final String authorPublisherQuery =
@@ -36,7 +36,7 @@ public class QueryTest {
     private static final String priceUpdate =
             "UPDATE BOOKS " +
             "SET PRICE = PRICE + ? " +
-            "WHERE Books.PUBLISHER_ID = " +
+            "WHERE BOOKS.PUBLISHER_ID = " +
                     "(SELECT PUBLISHERS.PUBLISHER_ID FROM Publishers WHERE Name = ?)";
 
     private static Scanner in;
@@ -49,7 +49,8 @@ public class QueryTest {
             authors.add("Any");
             publishers.add("Any");
             try (Statement stat = conn.createStatement()) {
-                // Заполняем списочный массив именами Авторов
+
+                // Заполняем списочный массив именами авторов книг
                 var query = "SELECT NAME FROM AUTHORS";
                 try (ResultSet rs = stat.executeQuery(query)) {
                     while (rs.next()){
@@ -84,8 +85,8 @@ public class QueryTest {
     }
 
     /**
-
-     * @param conn
+     Выполняет выбранный запрос
+     * @param conn Подключение к базе данных
      */
     private static void executeQuery(Connection conn) throws SQLException {
         String author = select("AUTHORS:", authors);
@@ -115,9 +116,10 @@ public class QueryTest {
             }
         }
     }
-    /**
 
-     * @param conn
+    /**
+     Выполняет команду обновления с целью изменить цены на книги
+     * @param conn Подключение к базе данных
      */
     private static void changePrices(Connection conn) throws SQLException {
         String publisher = select("Publishers:", publishers.subList(1, publishers.size()));
@@ -131,10 +133,10 @@ public class QueryTest {
     }
 
     /**
-
-     * @param prompt
-     * @param options
-     * @return
+     Предлагаем пользователю выбрать символьную строку
+     * @param prompt Отображаемое приглашение
+     * @param options Варианты выбора, предлагаемые пользователю
+     * @return Выбранный пользователем вариант
      */
     private static String select(String prompt, List<String> options) {
         while (true) {
@@ -149,11 +151,17 @@ public class QueryTest {
         }
     }
 
-
-
+    /**
+     Получаем сведения о подключении к базе данных из свойств,
+     задаваемых в файле database.properties и на их основании подключаемся к базе данных
+     * @return Подключение к базе данных
+     * @throws SQLException исключение
+     * @throws IOException исключение
+     */
     private static Connection getConnection() throws SQLException, IOException {
         var props = new Properties();
-        try (InputStream in = Files.newInputStream(Paths.get("hortsmann_v_two/src/main/resources/_301/database.properties"))) {
+        try (InputStream in = Files.newInputStream(
+                Paths.get("hortsmann_v_two/src/main/resources/_301/database.properties"))) {
             props.load(in);
         }
         String drivers = props.getProperty("jdbc.drivers");
