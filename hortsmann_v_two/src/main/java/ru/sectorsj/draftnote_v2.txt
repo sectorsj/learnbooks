@@ -1381,7 +1381,7 @@ https://horstmann.com/corejava/index.html
 // В состав вашей базы данных может входить утилита для непосредственного чтения файлов SQL.
 
 // В базе данных Dеrbу можно выполнить следующую команду:
-        command: java -jar derby/liЬ/derbyrun.jar ij -р ij.properties Books.sql
+        command: java -jar derby/lib/derbyrun.jar ij -р ij.properties Books.sql
 
 // для чтения файла свойств ij.properties, описанного ранее в разделе 5.3.3 (стр 297)
 
@@ -2629,3 +2629,81 @@ public class ExecSQLv2 {
 
 // Исходный код данной программы приведен в листинге 5.3
 // (ru/sectorsj/_315_query/QueryTest.java)
+
+
+// page 321
+// 5.5.2 Чтение и запись больших объектов (Reading and Writing LOBs)
+
+// *(LOBs) - большие объекты (large objects)
+
+// Помимо чисел, символьных строк и дат,
+// во многих базах данных можно сохранять большие объекты (LOB),
+// к числу которых относятся изображения и другие данные.
+
+// В языке SQL понятие больших объектов разделяется на категории:
+// - большие двоичные (binary) объекты (BLOB)
+// - большие символьные (character) объекты (CLOB)
+
+// Чтобы прочитать большой объект, необходимо сначала выполнить команду SELECT,
+// затем вызвать метод:
+// - getBlob()
+//      или
+// - getClob()
+// из интерфейса ResultSet.
+
+// В результате будет получен объект типа:
+// - Blob
+// или
+// - Clob
+
+// Для того чтобы получить двоичные данные из объекта типа Blob,
+// следует вызвать метод:
+// - getBytes()
+// или
+// - getinputStream()
+
+// Если имеется таблица с изображениями на книжных обложках,
+// то такое изображение можно получить следующим образом:
+    PreparedStatement stat = conn.prepareStatement("SELECT Cover FROM BookCovers WHERE ISBN = ?");
+    ...
+    stat.set(1, isbn);
+    try (ResultSet result = stat.executeQuery()) {
+        if (result.next()) {
+            Blob coverBlob = result.getBlob(1);
+            Image coverImage = ImageIO.read(coverBlob.getBinaryStream());
+        }
+    }
+
+// Аналогично, если извлечь объект типа Clob,
+// то из него можно получить символьные данные,
+// вызвав метод:
+// - String()
+// или
+// - getCharacterStream()
+
+// Чтобы разместить большой объект в базе данных,
+// 1. следует вызвать метод:
+//    - createLOB()
+//         или
+//    - createClob()
+//    для объекта типа Connection
+
+// 2. получить
+//    - поток вывода
+//          или
+//    - поток записи
+//    для большого объекта,
+
+// 3. записать данные
+
+// 4. сохранить этот объект в базе данных.
+
+// Пример как сохранить изображение в базе данных:
+    Blob coverBlob = conn.createBlob();
+    int offset = 0;
+    OutputStream out = coverBlob.setBinaryStream(offset);
+    ImageIO.write(coverImage, "PNG", out);
+    PreparedStatement stat = conn.prepareStatement("INSERT INTO Cover VALUES (?, ?)");
+    stat.set(1, isbn);
+    stat.set(2, coverBlob);
+    stat.executeUpdate();
