@@ -1,4 +1,4 @@
-CREATE TABLE BooksAuthors (ISBN CHAR(13), Author_Id CHAR(4), Seq_No INT);
+CREATE TABLE BooksAuthors (ISBN VARCHAR(13), Author_Id VARCHAR(4), Seq_No INT);
 INSERT INTO BooksAuthors VALUES ('0-201-96426-0', 'DATE', 1);
 INSERT INTO BooksAuthors VALUES ('0-201-96426-0', 'DARW', 2);
 INSERT INTO BooksAuthors VALUES ('0-19-501919-9', 'ALEX', 1);

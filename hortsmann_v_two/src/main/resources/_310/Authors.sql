@@ -1,4 +1,4 @@
-CREATE TABLE Authors (Author_Id CHAR(4), Name CHAR(25), Fname CHAR(25));
+CREATE TABLE Authors (Author_Id CHAR(4), Name VARCHAR(25), Fname VARCHAR(25));
 INSERT INTO Authors VALUES ('ALEX', 'Alexander', 'Christopher');
 INSERT INTO Authors VALUES ('BROO', 'Brooks', 'Frederick P.');
 INSERT INTO Authors VALUES ('CORM', 'Cormen', 'Thomas H.');

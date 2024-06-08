@@ -1,4 +1,4 @@
-CREATE TABLE Publishers (Publisher_Id CHAR(6), Name CHAR(30), URL CHAR(80));
+CREATE TABLE Publishers (Publisher_Id VARCHAR(200), Name VARCHAR(30), URL VARCHAR(80));
 INSERT INTO Publishers VALUES ('0201', 'Addison-Wesley', 'www.aw-bc.com');
 INSERT INTO Publishers VALUES ('0471', 'John Wiley & Sons', 'www.wiley.com');
 INSERT INTO Publishers VALUES ('0262', 'MIT Press', 'mitpress.mit.edu');

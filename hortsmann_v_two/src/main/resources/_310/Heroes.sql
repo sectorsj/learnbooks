@@ -1,8 +1,8 @@
 CREATE TABLE Heroes
 (
-	Hero_Id CHAR(4),
-	Name CHAR(25),
-	Fname CHAR(25)
+	Hero_Id VARCHAR(4),
+	Name VARCHAR(25),
+	Fname VARCHAR(25)
 );
 
 INSERT INTO Heroes VALUES (
