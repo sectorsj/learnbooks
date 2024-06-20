@@ -19,6 +19,7 @@
         <module>hortsmann_v_one</module>
         <module>vasilyev/javaForBeginners</module>
         <module>hortsmann_v_two</module>
+	    <module>learndb</module>
     </modules>
     <dependencies>
         <dependency>
