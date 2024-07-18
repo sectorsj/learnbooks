@@ -1,0 +1,27 @@
+@startuml
+title
+Рис. 10.2 Иерархия наследования классов фреймов
+и компонентов AWT и Swing
+end title
+
+skinparam linetype ortho
+skinparam arrowColor red
+skinparam arrowThickness 1
+
+object "Object" as Object
+object "Component" as Component
+object "Container" as Container
+object "JComponent" as JComponent
+object "JPanel" as JPanel
+object "Window" as Window
+object "Frame" as Frame
+object "JFrame" as JFrame
+
+Object <|-- Component
+Component <|-- Container
+Container <|-- JComponent
+Container <|-- Window
+JComponent <|-- JPanel
+Window <|-- Frame
+Frame <|-- JFrame
+@enduml
