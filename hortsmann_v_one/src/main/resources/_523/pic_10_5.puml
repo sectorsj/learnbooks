@@ -1,0 +1,16 @@
+@startuml
+title
+Рис. 10.5 Классы для рисования прямоугольников
+end title
+
+skinparam linetype ortho
+skinparam arrowColor red
+skinparam arrowThickness 1
+
+rectangle "Rectangle2D" as Rectangle2D
+rectangle "Rectangle2D.Float" as Float
+rectangle "Rectangle2D.Double" as Double
+
+Rectangle2D <|-- Float
+Rectangle2D <|-- Double
+@enduml

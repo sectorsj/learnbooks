@@ -1,0 +1,9 @@
+@startuml
+title
+Рис. 10.6 Прямоугольник, ограничивающий эллипс
+end title
+
+rectangle {
+    usecase "                         " #line:green;line.dashed;text:green
+}
+@enduml
