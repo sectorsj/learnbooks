@@ -1,0 +1,24 @@
+@startuml
+title
+Рис. 10.7 Отношения между классами,
+представляющими двухмерные формы
+end title
+
+rectangle Point2D
+rectangle Point
+
+rectangle Shape
+rectangle Line2D
+rectangle "Rectangular Shape" as RectangularShape
+rectangle Ellipse2D
+rectangle Rectangle2D
+rectangle Rectangle
+
+Point2D <|-- Point
+Shape <|.. Line2D
+Shape <|.. RectangularShape
+RectangularShape <|-- Ellipse2D
+RectangularShape <|-- Rectangle2D
+Rectangle2D <|-- Rectangle
+
+@enduml
