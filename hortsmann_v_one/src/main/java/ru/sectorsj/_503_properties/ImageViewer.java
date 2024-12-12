@@ -32,8 +32,10 @@ class ImageViewerFrame extends JFrame {
     public ImageViewerFrame() {
 
         // String userDir = System.getProperty("user.home");
-        String userDir = "hortsmann_v_one\\src\\main\\resources\\_503";
-        var propertiesDir = new File(userDir, ".corejava");
+        // String userDir = "hortsmann_v_one\\src\\main\\resources\\_503";
+        // var propertiesDir = new File(userDir, ".corejava");
+        String userDir = "hortsmann_v_one\\src\\main\\resources";
+        var propertiesDir = new File(userDir, "_503");
         if (!propertiesDir.exists()){
             propertiesDir.mkdir();
         }
