@@ -8834,3 +8834,31 @@ Collections.unmodifiableNavigableMap
 // на рис. 10.10 (resources/_533/pic_10_10.JPG)
 
 
+// page 536
+// 10.3.4 Воспроизведение изображений (Displaying Images)
+
+// ImageIcon - класс для изображение из файла,
+    Image image = new ImageIcon(filename).getImage();
+
+// -> переменная image содержит ссылку на объект, инкапсулирующий данные изображения.
+
+// Используя этот объект, изображение можно:
+// - вывести на экран с помощью метода drawimage() из класса Graphics
+    public void paintComponent(Graphics g) {
+        ...
+        g.drawImage(image, x, y, null);
+    }
+
+// Задача:
+// Вывести указанное изображение в окне рядами.
+// Получаемый в итоге результат приведен на рис.10.11 (resources/_537/pic_10_11.JPG)
+
+// Решение:
+// Вывод изображения рядами осуществляется с помощью метода paintComponent().
+//  1. Одна копия изображения воспроизводится в левом верхнем углу окна
+//  2. Вызывается метод copyArea(), который копирует его по всему окну:
+
+    for (int i = 0; i * imageWidth <= getWidth(); i++)
+        for (int j = 0; j * imageHeight <= getHeight(); j++ )
+            if (i + j > 0)
+                g.copyArea(0, 0, imageWidth, imageHeight, i * imageWidth, j * imageHeight);
