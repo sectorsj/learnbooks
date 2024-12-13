@@ -1,0 +1,18 @@
+@startuml
+
+title
+Рис. 10.13 Уведомление о событии
+
+end title
+
+activate MyFrame
+MyFrame -> JButton : 1) new
+MyFrame -> MyListener : 2) new
+MyFrame -> JButton : 3) addActionListener
+activate JButton
+deactivate JButton
+JButton -> MyListener : 4) actionPerformed
+activate JButton
+activate MyListener
+
+@enduml

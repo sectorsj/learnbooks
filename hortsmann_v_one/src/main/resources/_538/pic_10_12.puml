@@ -1,0 +1,13 @@
+@startuml
+title
+Рис. 10.12 Отношения между источниками
+и приемниками событий
+end title
+
+rectangle "Источник событий" as eventSource
+rectangle "Приемник событий" as eventListener
+rectangle "Интерфейс приемника событий" as eventListenerInterface
+
+eventSource"<<1 или больше событий>>" o-right- eventListener : "1...*"
+eventListener ..|> eventListenerInterface : <<реализует>>
+@enduml
