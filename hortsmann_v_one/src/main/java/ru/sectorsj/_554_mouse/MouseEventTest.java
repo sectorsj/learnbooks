@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.util.*;
 
 
-class MouseEventTest {
+class MouseTest {
     public static void main(String[] args) {
         EventQueue.invokeLater(() ->{
             var frame = new MouseEventFrame();
