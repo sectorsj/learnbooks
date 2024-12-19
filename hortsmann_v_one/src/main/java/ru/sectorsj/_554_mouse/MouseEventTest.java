@@ -7,10 +7,7 @@ import javax.swing.*;
 import java.util.*;
 
 
-/**
- * Компонент для операций с мышью по добавлению и удалению квадратов
- */
-class MouseTest {
+class MouseEventTest {
     public static void main(String[] args) {
         EventQueue.invokeLater(() ->{
             var frame = new MouseEventFrame();
@@ -27,7 +24,12 @@ class MouseEventFrame extends JFrame {
         pack();
     }
 }
-    class MouseEventComponent extends JComponent {
+
+
+/**
+ * Компонент для операций с мышью по добавлению и удалению квадратов
+ */
+class MouseEventComponent extends JComponent {
     private static final int DEFAULT_WIDTH = 300;
     private static final int DEFAULT_HEIGHT = 200;
 
@@ -56,11 +58,11 @@ class MouseEventFrame extends JFrame {
         }
     }
 
-        /**
-         * Обнаруживает первый квадрат, содержащий заданную точку
-         * @param p Точка
-         * @return
-         */
+    /**
+     * Обнаруживает первый квадрат, содержащий заданную точку
+     * @param p Точка
+     * @return
+     */
     public Rectangle2D find(Point2D p) {
         for (Rectangle2D r : squares) {
             if (r.contains(p)) return r;
@@ -68,10 +70,10 @@ class MouseEventFrame extends JFrame {
         return null;
     }
 
-        /**
-         * Добавляет квадрат в коллекцию
-         * @param p Центр квадрата
-         */
+    /**
+     * Добавляет квадрат в коллекцию
+     * @param p Центр квадрата
+     */
     public void add(Point2D p) {
         double x = p.getX();
         double y = p.getY();
@@ -85,10 +87,10 @@ class MouseEventFrame extends JFrame {
         repaint();
     }
 
-        /**
-         * Удаляет квадрат из коллекции
-         * @param s Квадрат, который нужно удалить
-         */
+    /**
+     * Удаляет квадрат из коллекции
+     * @param s Квадрат, который нужно удалить
+     */
     public void remove(Rectangle2D s) {
         if (s == null) return;
         if (s == current) {
@@ -101,6 +103,7 @@ class MouseEventFrame extends JFrame {
     private class MouseHandler extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent event) {
+
             // Добавить новый квадрат, если курсор находится за пределами квадрата
             current = find(event.getPoint());
             if (current == null) {
@@ -111,6 +114,7 @@ class MouseEventFrame extends JFrame {
         @Override
         public void mouseClicked(MouseEvent event) {
             current = find(event.getPoint());
+
             // Удалить текущий квадрат, если на нем произведен двойной щелчок
             if (current != null && event.getClickCount() >= 2) {
                 remove(current);
