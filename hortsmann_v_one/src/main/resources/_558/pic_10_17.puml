@@ -1,0 +1,40 @@
+@startuml
+title
+Рис. 10.17 Схематическое представление иерархии
+наследования классов событий в библиотеке AWT
+end title
+
+rectangle "Event Object" as EventObject
+rectangle "AWT Event" as AwtEvent
+rectangle "AWT Event" as AwtEvent
+rectangle "Action Event" as ActionEvent
+rectangle "Adjustment Event" as AdjustmentEvent
+rectangle "Component Event" as ComponentEvent
+rectangle "Item Event" as ItemEvent
+rectangle "Focus Event" as FocusEvent
+rectangle "Input Event" as InputEvent
+rectangle "Paint Event" as PaintEvent
+rectangle "Window Event" as WindowEvent
+rectangle "Key Event" as KeyEvent
+rectangle "Mouse Event" as MouseEvent
+rectangle "MouseWheel Event" as MouseWheelEvent
+
+
+EventObject <|-- AwtEvent
+
+AwtEvent <|-- ActionEvent
+AwtEvent <|-- AdjustmentEvent
+AwtEvent <|-- ComponentEvent
+AwtEvent <|-- ItemEvent
+
+ComponentEvent <|-- FocusEvent
+ComponentEvent <|-- InputEvent
+ComponentEvent <|-- PaintEvent
+ComponentEvent <|-- WindowEvent
+
+InputEvent <|-- KeyEvent
+InputEvent <|-- MouseEvent
+
+MouseEvent <|-- MouseWheelEvent
+
+@enduml
