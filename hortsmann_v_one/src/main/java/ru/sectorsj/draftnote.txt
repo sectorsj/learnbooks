@@ -9707,10 +9707,10 @@ Collections.unmodifiableNavigableMap
 
 // Для этого в ней определены два внутренних класса:
 // - MouseHandler
-// - MouseMotionHandler.
+// - MouseMotionHandler
 
 // Класс MouseHandler расширяет класс MouseAdapter,
-// поскольку в нем определяются только два из пяти методов интерфейса MouseListener.
+// т.к. в нем определяются только 2/5 методов интерфейса MouseListener.
 
 // Класс MouseMotionHandler реализует интерфейс MouseMotionListener
 // и определяет оба его метода.
