@@ -14,6 +14,7 @@ module hortsmann_v_one {
     requires eu.hansolo.fx.heatmap;
     requires com.almasb.fxgl.all;
     requires java.logging;
+    requires java.prefs;
 
     exports ru.sectorsj._0_hello;
     opens ru.sectorsj._0_hello to javafx.fxml;
