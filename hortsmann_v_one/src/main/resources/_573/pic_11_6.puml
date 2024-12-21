@@ -1,0 +1,55 @@
+@startuml
+title
+Рис. 11.6 Иерархия наследования от класса Component
+end title
+skinparam conditionStyle inside
+
+rectangle "Object" as Object
+rectangle "Component" as Component
+rectangle "Container" as Container
+
+rectangle "Window" as Window
+rectangle "JComponent" as JComponent
+rectangle "Frame" as Frame
+rectangle "Dialog" as Dialog
+rectangle "JFrame" as JFrame
+rectangle "JDialog" as JDialog
+
+rectangle "JPanel" as JPanel
+rectangle "JText Component" as JTextComponent
+rectangle "JLabel" as JLabel
+rectangle "JScroll Pane" as JScrollPane
+rectangle "JCombo Box" as JComboBox
+rectangle "Abstract Button" as AbstractButton
+rectangle "JMenuBar" as JMenuBar
+rectangle "JTextField" as JTextField
+rectangle "JTextArea" as JTextArea
+rectangle "JButton" as JButton
+rectangle "JToggle Button" as JToggleButton
+rectangle "JMenuItem" as JMenuItem
+
+Object <|-- Component
+
+Component <|-- Container
+Container <|-- Window
+Window <|-- Frame
+Frame <|-- JFrame
+Window <|-- Dialog
+Dialog <|-- JDialog
+
+Container <|-- JComponent
+JComponent <|-- JPanel
+JComponent <|-- JTextComponent
+JTextComponent <|-- JTextField
+JTextComponent <|-- JTextArea
+
+JComponent <|-- JLabel
+JComponent <|-- JScrollPane
+JComponent <|-- JComboBox
+JComponent <|-- AbstractButton
+AbstractButton <|-- JButton
+AbstractButton <|-- JToggleButton
+AbstractButton <|-- JMenuItem
+
+JComponent <|-- JMenuBar
+@enduml
