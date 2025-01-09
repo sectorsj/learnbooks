@@ -1,0 +1,75 @@
+
+
+Попробуйте новую кроссплатформенную оболочку PowerShell (https://aka.ms/pscore6)
+
+Загрузка личных и системных профилей заняла 1089мс.
+SectorSj@SectorSj psql -h localhost -p 5433 -U sectorsj -d aviation_db *> aviation_db.log
+Пароль пользователя sectorsj:
+\g
+SectorSj@SectorSj psql -h localhost -p 5433 -U sectorsj -d aviation_db *> aviation_db.log
+Пароль пользователя sectorsj:
+
+SectorSj@SectorSj psql -h localhost -p 5433 -U sectorsj -d aviation_db > aviation_db.log 2>&1
+Пароль пользователя sectorsj:
+
+SectorSj@SectorSj psql -h localhost -p 5433 -U sectorsj -d aviation_db > aviation_db.log 2>&1
+Пароль пользователя sectorsj:
+
+
+SectorSj@SectorSj chcp 1251
+Текущая кодовая страница: 1251
+
+
+SectorSj@SectorSj psql -h localhost -p 5433 -U sectorsj -d aviation_db
+Пароль пользователя sectorsj:
+psql (13.15)
+Введите "help", чтобы получить справку.
+
+
+aviation_db=# CREATE TABLE aircrafts
+aviation_db-# ( aircraft_code char(3) NOT NULL,
+aviation_db(# model text NOT NULL,
+aviation_db(# range integer NOT NULL,
+aviation_db(# CHECK (range > 0),
+aviation_db(# PRIMARY KEY (aircraft_code)
+aviation_db(# );
+CREATE TABLE
+
+aviation_db=# \d
+            Список отношений
+ Схема  |    Имя    |   Тип   | Владелец
+--------+-----------+---------+----------
+ public | aircrafts | таблица | sectorsj
+(1 строка)
+
+
+aviation_db=# INSERT INTO aircrafts (aircraft_code, model, range)
+aviation_db-# VALUES ('SU9', 'Sukhoi SuperJet-100', '3000');
+INSERT 0 1
+
+aviation_db=# \d
+            Список отношений
+ Схема  |    Имя    |   Тип   | Владелец
+--------+-----------+---------+----------
+ public | aircrafts | таблица | sectorsj
+(1 строка)
+
+
+aviation_db=# SELECT * FROM aircrafts;
+ aircraft_code |        model        | range
+---------------+---------------------+-------
+ SU9           | Sukhoi SuperJet-100 |  3000
+(1 строка)
+
+INSERT INTO aircrafts (aircraft_code, model, range)
+    VALUES ('773', 'Boing 777-300', '11100'),
+           ('763', 'Boing 767-300', '7900'),
+           ('733', 'Boing 737-300', '4200'),
+           ('320', 'Airbus A320-200', '5700'),
+           ('321', 'Airbus A321-200', '5600'),
+           ('319', 'Airbus A319-100', '6700'),
+           ('CN1', 'Cessna 208 Caravan', '1200'),
+           ('CR2', 'Bombardier CRJ-200', '2700');
+
+
+SELECT * FROM aircrafts;
