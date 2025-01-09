@@ -45,6 +45,9 @@ INSERT INTO имя-таблицы [(имя-атрибута, имя-атрибу
 SELECT имя-атрибута, имя-атрибута, ...
     FROM имя-таблицы;
 
+
+// Пример:
+// Как выглядит ввод через утилиту psql:
 aviation_db=# CREATE TABLE aircrafts
 aviation_db-# ( aircraft_code char(3) NOT NULL,
 aviation_db(# model text NOT NULL,
@@ -80,6 +83,7 @@ aviation_db=# SELECT * FROM aircrafts;
  SU9           | Sukhoi SuperJet-100 |  3000
 (1 строка)
 
+// Вводим в таблицу еще данные о самолетах:
 INSERT INTO aircrafts (aircraft_code, model, range)
     VALUES ('773', 'Boeing 777-300', '11100'),
            ('763', 'Boeing 767-300', '7900'),
@@ -90,16 +94,47 @@ INSERT INTO aircrafts (aircraft_code, model, range)
            ('CN1', 'Cessna 208 Caravan', '1200'),
            ('CR2', 'Bombardier CRJ-200', '2700');
 
+// Выводим информацию о всех самолетах:
+SELECT *
+FROM aircrafts;
 
-SELECT * FROM aircrafts;
-
+// Выполняем сортировку всех самолетов по названию:
 SELECT model, aircraft_code, range
     FROM aircrafts
     ORDER BY model;
 
-
+// выполняем сортировку самолетов
+// по дальности полета от 4000 до 6000:
 SELECT model, aircraft_code, range
     FROM aircrafts
     WHERE range >= 4000 AND range <= 6000;
 
 
+UPDATE имя-таблицы
+    SET имя-атрибута1 = значение-атрибута1,
+        имя-атрибута2 = значение-атрибута2,
+        ...
+    WHERE условие;
+
+// Выполняем обновление записи о самолете Сухой СуперДжет 100:
+UPDATE aircrafts
+    SET range = 3500
+    WHERE aircraft_code = 'SU9';
+
+// Выбор всех самолетов с определенным кодом самолета:
+SELECT *
+    FROM aircrafts
+    WHERE aircraft_code = 'SU9';
+
+DELETE
+    FROM имя-таблицы
+    WHERE условие;
+
+// Удаляем все записи с определенным кодом самолета:
+DELETE
+    FROM aircrafts
+    WHERE aircraft_code = 'CN1';
+
+// В утилите psql, можно сохранить
+// всю историю выполненных команд в текстовом файле:
+    \s имя-файла-для-сохранения-истории-команд
